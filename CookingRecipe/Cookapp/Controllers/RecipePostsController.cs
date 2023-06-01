@@ -9,57 +9,57 @@ using Cookapp.Data;
 
 namespace Cookapp.Controllers
 {
-    [Route("Cookapp/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class AccountsController : ControllerBase
+    public class RecipePostsController : ControllerBase
     {
         private readonly CookingRecipeDbContext _context;
 
-        public AccountsController(CookingRecipeDbContext context)
+        public RecipePostsController(CookingRecipeDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Accounts
-        [HttpGet("GetAllAccounts")]
-        public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
+        // GET: api/RecipePosts
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<RecipePost>>> GetRecipePosts()
         {
-          if (_context.Accounts == null)
+          if (_context.RecipePosts == null)
           {
               return NotFound();
           }
-            return await _context.Accounts.ToListAsync();
+            return await _context.RecipePosts.ToListAsync();
         }
 
-        // GET: api/Accounts/5
+        // GET: api/RecipePosts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Account>> GetAccount(string id)
+        public async Task<ActionResult<RecipePost>> GetRecipePost(string id)
         {
-          if (_context.Accounts == null)
+          if (_context.RecipePosts == null)
           {
               return NotFound();
           }
-            var account = await _context.Accounts.FindAsync(id);
+            var recipePost = await _context.RecipePosts.FindAsync(id);
 
-            if (account == null)
+            if (recipePost == null)
             {
                 return NotFound();
             }
 
-            return account;
+            return recipePost;
         }
 
-        // PUT: api/Accounts/5
+        // PUT: api/RecipePosts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAccount(string id, Account account)
+        public async Task<IActionResult> PutRecipePost(string id, RecipePost recipePost)
         {
-            if (id != account.Id)
+            if (id != recipePost.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(account).State = EntityState.Modified;
+            _context.Entry(recipePost).State = EntityState.Modified;
 
             try
             {
@@ -67,7 +67,7 @@ namespace Cookapp.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AccountExists(id))
+                if (!RecipePostExists(id))
                 {
                     return NotFound();
                 }
@@ -80,23 +80,23 @@ namespace Cookapp.Controllers
             return NoContent();
         }
 
-        // POST: api/Accounts
+        // POST: api/RecipePosts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Account>> PostAccount(Account account)
+        public async Task<ActionResult<RecipePost>> PostRecipePost(RecipePost recipePost)
         {
-          if (_context.Accounts == null)
+          if (_context.RecipePosts == null)
           {
-              return Problem("Entity set 'CookingRecipeDbContext.Accounts'  is null.");
+              return Problem("Entity set 'CookingRecipeDbContext.RecipePosts'  is null.");
           }
-            _context.Accounts.Add(account);
+            _context.RecipePosts.Add(recipePost);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (AccountExists(account.Id))
+                if (RecipePostExists(recipePost.Id))
                 {
                     return Conflict();
                 }
@@ -106,32 +106,32 @@ namespace Cookapp.Controllers
                 }
             }
 
-            return CreatedAtAction("GetAccount", new { id = account.Id }, account);
+            return CreatedAtAction("GetRecipePost", new { id = recipePost.Id }, recipePost);
         }
 
-        // DELETE: api/Accounts/5
-        [HttpDelete("DeleteAccount")]
-        public async Task<IActionResult> DeleteAccount(string id)
+        // DELETE: api/RecipePosts/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteRecipePost(string id)
         {
-            if (_context.Accounts == null)
+            if (_context.RecipePosts == null)
             {
                 return NotFound();
             }
-            var account = await _context.Accounts.FindAsync(id);
-            if (account == null)
+            var recipePost = await _context.RecipePosts.FindAsync(id);
+            if (recipePost == null)
             {
                 return NotFound();
             }
 
-            _context.Accounts.Remove(account);
+            _context.RecipePosts.Remove(recipePost);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool AccountExists(string id)
+        private bool RecipePostExists(string id)
         {
-            return (_context.Accounts?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.RecipePosts?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

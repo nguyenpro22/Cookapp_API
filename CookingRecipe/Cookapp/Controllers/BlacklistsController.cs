@@ -9,57 +9,57 @@ using Cookapp.Data;
 
 namespace Cookapp.Controllers
 {
-    [Route("Cookapp/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class AccountsController : ControllerBase
+    public class BlacklistsController : ControllerBase
     {
         private readonly CookingRecipeDbContext _context;
 
-        public AccountsController(CookingRecipeDbContext context)
+        public BlacklistsController(CookingRecipeDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Accounts
-        [HttpGet("GetAllAccounts")]
-        public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
+        // GET: api/Blacklists
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Blacklist>>> GetBlacklists()
         {
-          if (_context.Accounts == null)
+          if (_context.Blacklists == null)
           {
               return NotFound();
           }
-            return await _context.Accounts.ToListAsync();
+            return await _context.Blacklists.ToListAsync();
         }
 
-        // GET: api/Accounts/5
+        // GET: api/Blacklists/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Account>> GetAccount(string id)
+        public async Task<ActionResult<Blacklist>> GetBlacklist(string id)
         {
-          if (_context.Accounts == null)
+          if (_context.Blacklists == null)
           {
               return NotFound();
           }
-            var account = await _context.Accounts.FindAsync(id);
+            var blacklist = await _context.Blacklists.FindAsync(id);
 
-            if (account == null)
+            if (blacklist == null)
             {
                 return NotFound();
             }
 
-            return account;
+            return blacklist;
         }
 
-        // PUT: api/Accounts/5
+        // PUT: api/Blacklists/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAccount(string id, Account account)
+        public async Task<IActionResult> PutBlacklist(string id, Blacklist blacklist)
         {
-            if (id != account.Id)
+            if (id != blacklist.RefUser)
             {
                 return BadRequest();
             }
 
-            _context.Entry(account).State = EntityState.Modified;
+            _context.Entry(blacklist).State = EntityState.Modified;
 
             try
             {
@@ -67,7 +67,7 @@ namespace Cookapp.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AccountExists(id))
+                if (!BlacklistExists(id))
                 {
                     return NotFound();
                 }
@@ -80,23 +80,23 @@ namespace Cookapp.Controllers
             return NoContent();
         }
 
-        // POST: api/Accounts
+        // POST: api/Blacklists
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Account>> PostAccount(Account account)
+        public async Task<ActionResult<Blacklist>> PostBlacklist(Blacklist blacklist)
         {
-          if (_context.Accounts == null)
+          if (_context.Blacklists == null)
           {
-              return Problem("Entity set 'CookingRecipeDbContext.Accounts'  is null.");
+              return Problem("Entity set 'CookingRecipeDbContext.Blacklists'  is null.");
           }
-            _context.Accounts.Add(account);
+            _context.Blacklists.Add(blacklist);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (AccountExists(account.Id))
+                if (BlacklistExists(blacklist.RefUser))
                 {
                     return Conflict();
                 }
@@ -106,32 +106,32 @@ namespace Cookapp.Controllers
                 }
             }
 
-            return CreatedAtAction("GetAccount", new { id = account.Id }, account);
+            return CreatedAtAction("GetBlacklist", new { id = blacklist.RefUser }, blacklist);
         }
 
-        // DELETE: api/Accounts/5
-        [HttpDelete("DeleteAccount")]
-        public async Task<IActionResult> DeleteAccount(string id)
+        // DELETE: api/Blacklists/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBlacklist(string id)
         {
-            if (_context.Accounts == null)
+            if (_context.Blacklists == null)
             {
                 return NotFound();
             }
-            var account = await _context.Accounts.FindAsync(id);
-            if (account == null)
+            var blacklist = await _context.Blacklists.FindAsync(id);
+            if (blacklist == null)
             {
                 return NotFound();
             }
 
-            _context.Accounts.Remove(account);
+            _context.Blacklists.Remove(blacklist);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool AccountExists(string id)
+        private bool BlacklistExists(string id)
         {
-            return (_context.Accounts?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Blacklists?.Any(e => e.RefUser == id)).GetValueOrDefault();
         }
     }
 }

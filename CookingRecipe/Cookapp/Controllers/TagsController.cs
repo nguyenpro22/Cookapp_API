@@ -9,57 +9,57 @@ using Cookapp.Data;
 
 namespace Cookapp.Controllers
 {
-    [Route("Cookapp/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class AccountsController : ControllerBase
+    public class TagsController : ControllerBase
     {
         private readonly CookingRecipeDbContext _context;
 
-        public AccountsController(CookingRecipeDbContext context)
+        public TagsController(CookingRecipeDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Accounts
-        [HttpGet("GetAllAccounts")]
-        public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
+        // GET: api/Tags
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Tag>>> GetTags()
         {
-          if (_context.Accounts == null)
+          if (_context.Tags == null)
           {
               return NotFound();
           }
-            return await _context.Accounts.ToListAsync();
+            return await _context.Tags.ToListAsync();
         }
 
-        // GET: api/Accounts/5
+        // GET: api/Tags/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Account>> GetAccount(string id)
+        public async Task<ActionResult<Tag>> GetTag(string id)
         {
-          if (_context.Accounts == null)
+          if (_context.Tags == null)
           {
               return NotFound();
           }
-            var account = await _context.Accounts.FindAsync(id);
+            var tag = await _context.Tags.FindAsync(id);
 
-            if (account == null)
+            if (tag == null)
             {
                 return NotFound();
             }
 
-            return account;
+            return tag;
         }
 
-        // PUT: api/Accounts/5
+        // PUT: api/Tags/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAccount(string id, Account account)
+        public async Task<IActionResult> PutTag(string id, Tag tag)
         {
-            if (id != account.Id)
+            if (id != tag.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(account).State = EntityState.Modified;
+            _context.Entry(tag).State = EntityState.Modified;
 
             try
             {
@@ -67,7 +67,7 @@ namespace Cookapp.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AccountExists(id))
+                if (!TagExists(id))
                 {
                     return NotFound();
                 }
@@ -80,23 +80,23 @@ namespace Cookapp.Controllers
             return NoContent();
         }
 
-        // POST: api/Accounts
+        // POST: api/Tags
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Account>> PostAccount(Account account)
+        public async Task<ActionResult<Tag>> PostTag(Tag tag)
         {
-          if (_context.Accounts == null)
+          if (_context.Tags == null)
           {
-              return Problem("Entity set 'CookingRecipeDbContext.Accounts'  is null.");
+              return Problem("Entity set 'CookingRecipeDbContext.Tags'  is null.");
           }
-            _context.Accounts.Add(account);
+            _context.Tags.Add(tag);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (AccountExists(account.Id))
+                if (TagExists(tag.Id))
                 {
                     return Conflict();
                 }
@@ -106,32 +106,32 @@ namespace Cookapp.Controllers
                 }
             }
 
-            return CreatedAtAction("GetAccount", new { id = account.Id }, account);
+            return CreatedAtAction("GetTag", new { id = tag.Id }, tag);
         }
 
-        // DELETE: api/Accounts/5
-        [HttpDelete("DeleteAccount")]
-        public async Task<IActionResult> DeleteAccount(string id)
+        // DELETE: api/Tags/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTag(string id)
         {
-            if (_context.Accounts == null)
+            if (_context.Tags == null)
             {
                 return NotFound();
             }
-            var account = await _context.Accounts.FindAsync(id);
-            if (account == null)
+            var tag = await _context.Tags.FindAsync(id);
+            if (tag == null)
             {
                 return NotFound();
             }
 
-            _context.Accounts.Remove(account);
+            _context.Tags.Remove(tag);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool AccountExists(string id)
+        private bool TagExists(string id)
         {
-            return (_context.Accounts?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Tags?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
