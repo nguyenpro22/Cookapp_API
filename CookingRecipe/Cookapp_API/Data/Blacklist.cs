@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Cookapp.Data;
+namespace Cookapp_API.Data;
 
 public partial class Blacklist
 {

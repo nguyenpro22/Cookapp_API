@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Cookapp.Data;
+using Cookapp_API.Data;
 
-namespace Cookapp.Controllers
+namespace Cookapp_API.Controllers
 {
-    [Route("Cookapp/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AccountsController : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace Cookapp.Controllers
         }
 
         // GET: api/Accounts
-        [HttpGet("GetAllAccounts")]
+        [HttpGet("Getallaccount")]
         public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
         {
           if (_context.Accounts == null)
@@ -110,7 +110,7 @@ namespace Cookapp.Controllers
         }
 
         // DELETE: api/Accounts/5
-        [HttpDelete("DeleteAccount")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAccount(string id)
         {
             if (_context.Accounts == null)

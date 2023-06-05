@@ -5,61 +5,61 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Cookapp.Data;
+using Cookapp_API.Data;
 
-namespace Cookapp.Controllers
+namespace Cookapp_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BlacklistsController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
         private readonly CookingRecipeDbContext _context;
 
-        public BlacklistsController(CookingRecipeDbContext context)
+        public CategoriesController(CookingRecipeDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Blacklists
+        // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Blacklist>>> GetBlacklists()
+        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-          if (_context.Blacklists == null)
+          if (_context.Categories == null)
           {
               return NotFound();
           }
-            return await _context.Blacklists.ToListAsync();
+            return await _context.Categories.ToListAsync();
         }
 
-        // GET: api/Blacklists/5
+        // GET: api/Categories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Blacklist>> GetBlacklist(string id)
+        public async Task<ActionResult<Category>> GetCategory(string id)
         {
-          if (_context.Blacklists == null)
+          if (_context.Categories == null)
           {
               return NotFound();
           }
-            var blacklist = await _context.Blacklists.FindAsync(id);
+            var category = await _context.Categories.FindAsync(id);
 
-            if (blacklist == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return blacklist;
+            return category;
         }
 
-        // PUT: api/Blacklists/5
+        // PUT: api/Categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBlacklist(string id, Blacklist blacklist)
+        public async Task<IActionResult> PutCategory(string id, Category category)
         {
-            if (id != blacklist.RefUser)
+            if (id != category.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(blacklist).State = EntityState.Modified;
+            _context.Entry(category).State = EntityState.Modified;
 
             try
             {
@@ -67,7 +67,7 @@ namespace Cookapp.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!BlacklistExists(id))
+                if (!CategoryExists(id))
                 {
                     return NotFound();
                 }
@@ -80,23 +80,23 @@ namespace Cookapp.Controllers
             return NoContent();
         }
 
-        // POST: api/Blacklists
+        // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Blacklist>> PostBlacklist(Blacklist blacklist)
+        public async Task<ActionResult<Category>> PostCategory(Category category)
         {
-          if (_context.Blacklists == null)
+          if (_context.Categories == null)
           {
-              return Problem("Entity set 'CookingRecipeDbContext.Blacklists'  is null.");
+              return Problem("Entity set 'CookingRecipeDbContext.Categories'  is null.");
           }
-            _context.Blacklists.Add(blacklist);
+            _context.Categories.Add(category);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (BlacklistExists(blacklist.RefUser))
+                if (CategoryExists(category.Id))
                 {
                     return Conflict();
                 }
@@ -106,32 +106,32 @@ namespace Cookapp.Controllers
                 }
             }
 
-            return CreatedAtAction("GetBlacklist", new { id = blacklist.RefUser }, blacklist);
+            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
         }
 
-        // DELETE: api/Blacklists/5
+        // DELETE: api/Categories/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBlacklist(string id)
+        public async Task<IActionResult> DeleteCategory(string id)
         {
-            if (_context.Blacklists == null)
+            if (_context.Categories == null)
             {
                 return NotFound();
             }
-            var blacklist = await _context.Blacklists.FindAsync(id);
-            if (blacklist == null)
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
             {
                 return NotFound();
             }
 
-            _context.Blacklists.Remove(blacklist);
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool BlacklistExists(string id)
+        private bool CategoryExists(string id)
         {
-            return (_context.Blacklists?.Any(e => e.RefUser == id)).GetValueOrDefault();
+            return (_context.Categories?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

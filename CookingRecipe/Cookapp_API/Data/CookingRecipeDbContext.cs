@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cookapp.Data;
+namespace Cookapp_API.Data;
 
 public partial class CookingRecipeDbContext : DbContext
 {
@@ -19,7 +19,11 @@ public partial class CookingRecipeDbContext : DbContext
 
     public virtual DbSet<Blacklist> Blacklists { get; set; }
 
+    public virtual DbSet<Category> Categories { get; set; }
+
     public virtual DbSet<Comment> Comments { get; set; }
+
+    public virtual DbSet<Image> Images { get; set; }
 
     public virtual DbSet<IngrePost> IngrePosts { get; set; }
 
@@ -39,17 +43,12 @@ public partial class CookingRecipeDbContext : DbContext
 
     public virtual DbSet<TagPost> TagPosts { get; set; }
 
-    public virtual DbSet<Type> Types { get; set; }
-
     public virtual DbSet<TypePost> TypePosts { get; set; }
 
+    public virtual DbSet<Video> Videos { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlServer("Name=CookappDB");
-        }
-    }
+        => optionsBuilder.UseSqlServer("Name=ConnectionStrings:CookappDB");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -86,22 +85,37 @@ public partial class CookingRecipeDbContext : DbContext
 
         modelBuilder.Entity<Blacklist>(entity =>
         {
-            entity.HasKey(e => e.RefUser).HasName("PK_blacklist_1");
+            entity
+                .HasNoKey()
+                .ToTable("blacklist");
 
-            entity.ToTable("blacklist");
-
-            entity.Property(e => e.RefUser)
-                .HasMaxLength(50)
-                .HasColumnName("ref_user");
             entity.Property(e => e.IsBan).HasColumnName("isBan");
             entity.Property(e => e.Reason)
                 .HasMaxLength(50)
                 .HasColumnName("reason");
+            entity.Property(e => e.RefUser)
+                .HasMaxLength(50)
+                .HasColumnName("ref_user");
 
-            entity.HasOne(d => d.RefUserNavigation).WithOne(p => p.Blacklist)
-                .HasForeignKey<Blacklist>(d => d.RefUser)
+            entity.HasOne(d => d.RefUserNavigation).WithMany()
+                .HasForeignKey(d => d.RefUser)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_blacklist_accounts");
+        });
+
+        modelBuilder.Entity<Category>(entity =>
+        {
+            entity.ToTable("category");
+
+            entity.Property(e => e.Id)
+                .HasMaxLength(50)
+                .HasColumnName("id");
+            entity.Property(e => e.Content)
+                .HasMaxLength(50)
+                .HasColumnName("content");
+            entity.Property(e => e.Title)
+                .HasMaxLength(50)
+                .HasColumnName("title");
         });
 
         modelBuilder.Entity<Comment>(entity =>
@@ -130,6 +144,18 @@ public partial class CookingRecipeDbContext : DbContext
             entity.HasOne(d => d.RefPostNavigation).WithMany(p => p.Comments)
                 .HasForeignKey(d => d.RefPost)
                 .HasConstraintName("FK_comments_recipe_posts");
+        });
+
+        modelBuilder.Entity<Image>(entity =>
+        {
+            entity.ToTable("images");
+
+            entity.Property(e => e.Id)
+                .HasMaxLength(50)
+                .HasColumnName("id");
+            entity.Property(e => e.Content)
+                .HasMaxLength(50)
+                .HasColumnName("content");
         });
 
         modelBuilder.Entity<IngrePost>(entity =>
@@ -233,9 +259,15 @@ public partial class CookingRecipeDbContext : DbContext
             entity.Property(e => e.RefCategory)
                 .HasMaxLength(50)
                 .HasColumnName("ref_category");
+            entity.Property(e => e.RefImage)
+                .HasMaxLength(50)
+                .HasColumnName("ref_image");
             entity.Property(e => e.RefTag)
                 .HasMaxLength(50)
                 .HasColumnName("ref_tag");
+            entity.Property(e => e.RefVideo)
+                .HasMaxLength(50)
+                .HasColumnName("ref_video");
             entity.Property(e => e.Title)
                 .HasMaxLength(50)
                 .HasColumnName("title");
@@ -247,7 +279,16 @@ public partial class CookingRecipeDbContext : DbContext
 
             entity.HasOne(d => d.RefAccountNavigation).WithMany(p => p.RecipePosts)
                 .HasForeignKey(d => d.RefAccount)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_recipe_posts_accounts");
+
+            entity.HasOne(d => d.RefImageNavigation).WithMany(p => p.RecipePosts)
+                .HasForeignKey(d => d.RefImage)
+                .HasConstraintName("FK_recipe_posts_images");
+
+            entity.HasOne(d => d.RefVideoNavigation).WithMany(p => p.RecipePosts)
+                .HasForeignKey(d => d.RefVideo)
+                .HasConstraintName("FK_recipe_posts_videos");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -323,23 +364,6 @@ public partial class CookingRecipeDbContext : DbContext
                 .HasConstraintName("FK_tag_post_tags");
         });
 
-        modelBuilder.Entity<Type>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_category");
-
-            entity.ToTable("type");
-
-            entity.Property(e => e.Id)
-                .HasMaxLength(50)
-                .HasColumnName("id");
-            entity.Property(e => e.Content)
-                .HasMaxLength(50)
-                .HasColumnName("content");
-            entity.Property(e => e.Title)
-                .HasMaxLength(50)
-                .HasColumnName("title");
-        });
-
         modelBuilder.Entity<TypePost>(entity =>
         {
             entity
@@ -362,6 +386,18 @@ public partial class CookingRecipeDbContext : DbContext
                 .HasForeignKey(d => d.RefType)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_type_post_type");
+        });
+
+        modelBuilder.Entity<Video>(entity =>
+        {
+            entity.ToTable("videos");
+
+            entity.Property(e => e.Id)
+                .HasMaxLength(50)
+                .HasColumnName("id");
+            entity.Property(e => e.Video1)
+                .HasMaxLength(50)
+                .HasColumnName("video");
         });
 
         OnModelCreatingPartial(modelBuilder);

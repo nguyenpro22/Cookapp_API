@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Cookapp.Data;
+namespace Cookapp_API.Data;
 
-public partial class Type
+public partial class Category
 {
     public string Id { get; set; } = null!;
 

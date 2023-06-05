@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookapp", "Cookapp\Cookapp.csproj", "{5DE8B56E-C293-42BE-878F-0636047FA8B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookapp_API", "Cookapp_API\Cookapp_API.csproj", "{0DA8E3D2-BEBA-41F4-903D-35FF81585E0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5DE8B56E-C293-42BE-878F-0636047FA8B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5DE8B56E-C293-42BE-878F-0636047FA8B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5DE8B56E-C293-42BE-878F-0636047FA8B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5DE8B56E-C293-42BE-878F-0636047FA8B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DA8E3D2-BEBA-41F4-903D-35FF81585E0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DA8E3D2-BEBA-41F4-903D-35FF81585E0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DA8E3D2-BEBA-41F4-903D-35FF81585E0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DA8E3D2-BEBA-41F4-903D-35FF81585E0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3AE98822-1E41-4070-B3F9-528AED8A353E}
+		SolutionGuid = {E0C0F6A4-49C5-4080-B5B8-5E401EB5B6EA}
 	EndGlobalSection
 EndGlobal

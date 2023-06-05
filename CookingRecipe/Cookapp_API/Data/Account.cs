@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Cookapp.Data;
+namespace Cookapp_API.Data;
 
 public partial class Account
 {
@@ -18,8 +18,6 @@ public partial class Account
     public bool IsActive { get; set; }
 
     public string FullName { get; set; } = null!;
-
-    public virtual Blacklist? Blacklist { get; set; }
 
     public virtual ICollection<RecipePost> RecipePosts { get; set; } = new List<RecipePost>();
 
