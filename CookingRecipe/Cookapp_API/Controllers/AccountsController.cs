@@ -21,24 +21,24 @@ namespace Cookapp_API.Controllers
         }
 
         // GET: api/Accounts
-        [HttpGet("Getallaccount")]
+        [HttpGet("getallaccount")]
         public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
         {
-          if (_context.Accounts == null)
-          {
-              return NotFound();
-          }
+            if (_context.Accounts == null)
+            {
+                return NotFound();
+            }
             return await _context.Accounts.ToListAsync();
         }
 
         // GET: api/Accounts/5
-        [HttpGet("{id}")]
+        [HttpGet("getaccountbyid")]
         public async Task<ActionResult<Account>> GetAccount(string id)
         {
-          if (_context.Accounts == null)
-          {
-              return NotFound();
-          }
+            if (_context.Accounts == null)
+            {
+                return NotFound();
+            }
             var account = await _context.Accounts.FindAsync(id);
 
             if (account == null)
@@ -51,7 +51,7 @@ namespace Cookapp_API.Controllers
 
         // PUT: api/Accounts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("updateaccountbyid")]
         public async Task<IActionResult> PutAccount(string id, Account account)
         {
             if (id != account.Id)
@@ -82,13 +82,13 @@ namespace Cookapp_API.Controllers
 
         // POST: api/Accounts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("createnewaccount")]
         public async Task<ActionResult<Account>> PostAccount(Account account)
         {
-          if (_context.Accounts == null)
-          {
-              return Problem("Entity set 'CookingRecipeDbContext.Accounts'  is null.");
-          }
+            if (_context.Accounts == null)
+            {
+                return Problem("Entity set 'CookingRecipeDbContext.Accounts'  is null.");
+            }
             _context.Accounts.Add(account);
             try
             {
