@@ -26,7 +26,7 @@ jobs:
         run: dotnet restore ./CookingRecipe/Cookapp_API.sln
         
       - name: Build
-        run: dotnet build ./CurrentTimeService.sln --configuration Release --no-restore
+        run: dotnet build ./CookingRecipe/Cookapp_API.sln --configuration Release --no-restore
         
       - name: Publish
         run: dotnet publish ./CurrentTimeService.sln --configuration Release --no-build
