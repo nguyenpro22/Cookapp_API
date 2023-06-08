@@ -23,7 +23,7 @@ jobs:
           dotnet-version: '6.0.x'
           
       - name: Restore
-        run: dotnet restore ./WebApplicationDemo/WebApplicationDemo.sln
+        run: dotnet restore ./CookingRecipe/Cookapp_API.sln
         
       - name: Build
         run: dotnet build ./CurrentTimeService.sln --configuration Release --no-restore
