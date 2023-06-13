@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Cookapp_API.Data;
+using System.ComponentModel;
 
 namespace Cookapp_API.Controllers
 {
@@ -47,6 +48,12 @@ namespace Cookapp_API.Controllers
             }
 
             return account;
+        }
+        [HttpGet]
+        public int GetAccountCount()
+        {
+            var count = 1;
+            return count;
         }
 
         // PUT: api/Accounts/5
