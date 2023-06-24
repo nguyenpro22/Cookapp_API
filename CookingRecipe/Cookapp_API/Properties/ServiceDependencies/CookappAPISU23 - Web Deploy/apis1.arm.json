@@ -4,7 +4,7 @@
   "parameters": {
     "resourceGroupName": {
       "type": "string",
-      "defaultValue": "SWPGroup",
+      "defaultValue": "Cookapp",
       "metadata": {
         "_parameterType": "resourceGroup",
         "description": "Name of the resource group for the resource. It is recommended to put resources under same resource group for better tracking."
@@ -49,17 +49,17 @@
           "contentVersion": "1.0.0.0",
           "resources": [
             {
-              "name": "CookappAPI",
+              "name": "Cookrepapp",
               "type": "Microsoft.ApiManagement/service",
               "location": "[parameters('resourceLocation')]",
               "properties": {
-                "publisherEmail": "nhatdoanhnguyen@gmail.com",
-                "publisherName": "Doanh Nguyễn",
+                "publisherEmail": "datvtse141127@fpt.edu.vn",
+                "publisherName": "datvtse141127",
                 "notificationSenderEmail": "apimgmt-noreply@mail.windowsazure.com",
                 "hostnameConfigurations": [
                   {
                     "type": "Proxy",
-                    "hostName": "cookappapi.azure-api.net",
+                    "hostName": "cookrepapp.azure-api.net",
                     "encodedCertificate": null,
                     "keyVaultId": null,
                     "certificatePassword": null,
@@ -95,13 +95,13 @@
             },
             {
               "type": "Microsoft.ApiManagement/service/apis",
-              "name": "CookappAPI/CookappAPI",
+              "name": "Cookrepapp/CookappAPI",
               "properties": {
                 "displayName": "Cookapp_API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
                 "apiRevision": "1",
                 "description": null,
                 "subscriptionRequired": true,
-                "serviceUrl": "https://cookappapi.azurewebsites.net",
+                "serviceUrl": "https://cookappapisu23.azurewebsites.net",
                 "path": "",
                 "protocols": [
                   "https"
@@ -118,7 +118,7 @@
               },
               "apiVersion": "2019-12-01",
               "dependsOn": [
-                "CookappAPI"
+                "Cookrepapp"
               ]
             }
           ]

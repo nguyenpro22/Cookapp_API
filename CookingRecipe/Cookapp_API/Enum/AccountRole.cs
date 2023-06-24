@@ -1,6 +1,9 @@
 ﻿namespace Cookapp_API.Enum
 {
-    public class AccountRole
+    public enum AccountRole
     {
+        admin = 1,
+        owner = 2,
+        customer = 3
     }
 }

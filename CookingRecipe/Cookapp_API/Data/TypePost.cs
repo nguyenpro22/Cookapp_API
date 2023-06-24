@@ -9,7 +9,7 @@ public partial class TypePost
 
     public string RefType { get; set; } = null!;
 
-    public virtual RecipePost RefPostNavigation { get; set; } = null!;
+    public virtual Recipepost RefPostNavigation { get; set; } = null!;
 
     public virtual Category RefTypeNavigation { get; set; } = null!;
 }

@@ -7,7 +7,7 @@ public partial class Account
 {
     public string Id { get; set; } = null!;
 
-    public string Phone { get; set; } = null!;
+    public string Username { get; set; } = null!;
 
     public string Password { get; set; } = null!;
 
@@ -19,9 +19,5 @@ public partial class Account
 
     public string FullName { get; set; } = null!;
 
-    public virtual ICollection<RecipePost> RecipePosts { get; set; } = new List<RecipePost>();
 
-    public virtual Role Role { get; set; } = null!;
-
-    public virtual ICollection<SupplierStore> SupplierStores { get; set; } = new List<SupplierStore>();
 }

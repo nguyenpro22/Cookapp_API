@@ -11,5 +11,5 @@ public partial class IngrePost
 
     public virtual Ingredient RefIngredientNavigation { get; set; } = null!;
 
-    public virtual RecipePost RefPostNavigation { get; set; } = null!;
+    public virtual Recipepost RefPostNavigation { get; set; } = null!;
 }

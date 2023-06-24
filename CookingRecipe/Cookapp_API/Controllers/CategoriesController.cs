@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Cookapp_API.Data;
+using Cookapp_API.DataAccess.BLL;
+using Cookapp_API.DataAccess.DTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO;
 
 namespace Cookapp_API.Controllers
 {
@@ -14,21 +17,27 @@ namespace Cookapp_API.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly CookingRecipeDbContext _context;
+        private IConfiguration _configuration;
 
-        public CategoriesController(CookingRecipeDbContext context)
+        public CategoriesController(CookingRecipeDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
-        // GET: api/Categories
+        // GET: api/Categoriess
         [HttpGet("getallcategories")]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<ActionResult<List<CategoryDTO>>> GetCategories()
         {
             if (_context.Categories == null)
             {
                 return NotFound();
             }
-            return await _context.Categories.ToListAsync();
+            //return await _context.Accounts.ToListAsync();
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            List<CategoryDTO> accounts = bll.GetCategory();
+            return accounts;
+            //return await _context.Categories.ToListAsync();
         }
 
         // GET: api/Categories/5

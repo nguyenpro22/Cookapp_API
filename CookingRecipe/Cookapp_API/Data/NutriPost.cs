@@ -11,5 +11,5 @@ public partial class NutriPost
 
     public virtual Nutrition? RefNutriNavigation { get; set; }
 
-    public virtual RecipePost? RefPostNavigation { get; set; }
+    public virtual Recipepost? RefPostNavigation { get; set; }
 }

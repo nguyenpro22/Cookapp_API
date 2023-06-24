@@ -7,7 +7,7 @@ public partial class Image
 {
     public string Id { get; set; } = null!;
 
-    public string Content { get; set; } = null!;
+    public byte[] Image1 { get; set; } = null!;
 
-    public virtual ICollection<RecipePost> RecipePosts { get; set; } = new List<RecipePost>();
+    public virtual ICollection<Recipepost> Recipeposts { get; set; } = new List<Recipepost>();
 }

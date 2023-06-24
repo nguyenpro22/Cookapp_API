@@ -6,38 +6,32 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Cookapp_API.Data;
-using Cookapp_API.DataAccess.BLL;
-using Cookapp_API.DataAccess.DTO;
 
 namespace Cookapp_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountsController : ControllerBase
+    public class Accounts1Controller : ControllerBase
     {
         private readonly CookingRecipeDbContext _context;
-        private IConfiguration _configuration;
-        public AccountsController(CookingRecipeDbContext context, IConfiguration configuration)
+
+        public Accounts1Controller(CookingRecipeDbContext context)
         {
             _context = context;
-            _configuration = configuration;
         }
 
-        // GET: api/Accounts
+        // GET: api/Accounts1
         [HttpGet]
-        public async Task<ActionResult<List<AccountDTO>>> GetAccounts()
+        public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
         {
           if (_context.Accounts == null)
           {
               return NotFound();
           }
-            //return await _context.Accounts.ToListAsync();
-            AccountBLL bll = new AccountBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
-            List<AccountDTO> accounts = bll.GetAccounts();
-            return accounts;
+            return await _context.Accounts.ToListAsync();
         }
 
-        // GET: api/Accounts/5
+        // GET: api/Accounts1/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Account>> GetAccount(string id)
         {
@@ -55,16 +49,14 @@ namespace Cookapp_API.Controllers
             return account;
         }
 
-        // PUT: api/Accounts/5
+        // PUT: api/Accounts1/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<ActionResult<AccountDTO>> PutAccount(string id, AccountDTO account)
+        public async Task<IActionResult> PutAccount(string id, Account account)
         {
-            AccountBLL bll = new AccountBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
-            List<AccountDTO> accounts = bll.GetAccounts();
             if (id != account.Id)
             {
-                return Problem("Account Id is not match"); ;
+                return BadRequest();
             }
 
             _context.Entry(account).State = EntityState.Modified;
@@ -77,7 +69,7 @@ namespace Cookapp_API.Controllers
             {
                 if (!AccountExists(id))
                 {
-                    return Problem("Account has already existed!!");
+                    return NotFound();
                 }
                 else
                 {
@@ -88,7 +80,7 @@ namespace Cookapp_API.Controllers
             return NoContent();
         }
 
-        // POST: api/Accounts
+        // POST: api/Accounts1
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Account>> PostAccount(Account account)
@@ -117,7 +109,7 @@ namespace Cookapp_API.Controllers
             return CreatedAtAction("GetAccount", new { id = account.Id }, account);
         }
 
-        // DELETE: api/Accounts/5
+        // DELETE: api/Accounts1/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAccount(string id)
         {

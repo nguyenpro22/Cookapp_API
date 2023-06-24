@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Cookapp_API.Data;
 
-public partial class RecipePost
+public partial class Recipepost
 {
     public string Id { get; set; } = null!;
 
@@ -19,8 +19,6 @@ public partial class RecipePost
 
     public string RefCategory { get; set; } = null!;
 
-    public string? LocationId { get; set; }
-
     public string RefAccount { get; set; } = null!;
 
     public string? RefImage { get; set; }
@@ -28,8 +26,6 @@ public partial class RecipePost
     public string? RefVideo { get; set; }
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
-
-    public virtual SupplierStore? Location { get; set; }
 
     public virtual Account RefAccountNavigation { get; set; } = null!;
 

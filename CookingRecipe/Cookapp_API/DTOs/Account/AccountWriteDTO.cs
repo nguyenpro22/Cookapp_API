@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.Scripting;
-using Org.BouncyCastle.Crypto.Generators;
+using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace Cookapp_API.DTOs.Account
 {

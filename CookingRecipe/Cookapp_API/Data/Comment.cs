@@ -13,9 +13,7 @@ public partial class Comment
 
     public string RefUser { get; set; } = null!;
 
-    public string Status { get; set; } = null!;
-
     public string? RefPost { get; set; }
 
-    public virtual RecipePost? RefPostNavigation { get; set; }
+    public virtual Recipepost? RefPostNavigation { get; set; }
 }

@@ -9,7 +9,7 @@ public partial class TagPost
 
     public string RefTag { get; set; } = null!;
 
-    public virtual RecipePost RefPostNavigation { get; set; } = null!;
+    public virtual Recipepost RefPostNavigation { get; set; } = null!;
 
     public virtual Tag RefTagNavigation { get; set; } = null!;
 }

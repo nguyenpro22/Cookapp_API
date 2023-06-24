@@ -21,25 +21,25 @@ namespace Cookapp_API.Controllers
         }
 
         // GET: api/RecipePosts
-        [HttpGet("getallposts")]
-        public async Task<ActionResult<IEnumerable<RecipePost>>> GetRecipePosts()
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Recipepost>>> GetRecipePosts()
         {
-          if (_context.RecipePosts == null)
+          if (_context.Recipeposts == null)
           {
               return NotFound();
           }
-            return await _context.RecipePosts.ToListAsync();
+            return await _context.Recipeposts.ToListAsync();
         }
 
         // GET: api/RecipePosts/5
-        [HttpGet("getpostbyid")]
-        public async Task<ActionResult<RecipePost>> GetRecipePost(string id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Recipepost>> GetRecipePost(string id)
         {
-          if (_context.RecipePosts == null)
+          if (_context.Recipeposts == null)
           {
               return NotFound();
           }
-            var recipePost = await _context.RecipePosts.FindAsync(id);
+            var recipePost = await _context.Recipeposts.FindAsync(id);
 
             if (recipePost == null)
             {
@@ -51,8 +51,8 @@ namespace Cookapp_API.Controllers
 
         // PUT: api/RecipePosts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("updatenewpost")]
-        public async Task<IActionResult> PutRecipePost(string id, RecipePost recipePost)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutRecipePost(string id, Recipepost recipePost)
         {
             if (id != recipePost.Id)
             {
@@ -82,14 +82,14 @@ namespace Cookapp_API.Controllers
 
         // POST: api/RecipePosts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("createnewpost")]
-        public async Task<ActionResult<RecipePost>> PostRecipePost(RecipePost recipePost)
+        [HttpPost]
+        public async Task<ActionResult<Recipepost>> PostRecipePost(Recipepost recipePost)
         {
-          if (_context.RecipePosts == null)
+          if (_context.Recipeposts == null)
           {
               return Problem("Entity set 'CookingRecipeDbContext.RecipePosts'  is null.");
           }
-            _context.RecipePosts.Add(recipePost);
+            _context.Recipeposts.Add(recipePost);
             try
             {
                 await _context.SaveChangesAsync();
@@ -110,20 +110,20 @@ namespace Cookapp_API.Controllers
         }
 
         // DELETE: api/RecipePosts/5
-        [HttpDelete("deletepostby")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRecipePost(string id)
         {
-            if (_context.RecipePosts == null)
+            if (_context.Recipeposts == null)
             {
                 return NotFound();
             }
-            var recipePost = await _context.RecipePosts.FindAsync(id);
+            var recipePost = await _context.Recipeposts.FindAsync(id);
             if (recipePost == null)
             {
                 return NotFound();
             }
 
-            _context.RecipePosts.Remove(recipePost);
+            _context.Recipeposts.Remove(recipePost);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -131,7 +131,7 @@ namespace Cookapp_API.Controllers
 
         private bool RecipePostExists(string id)
         {
-            return (_context.RecipePosts?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Recipeposts?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

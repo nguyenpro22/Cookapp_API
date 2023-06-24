@@ -33,11 +33,9 @@ public partial class CookingRecipeDbContext : DbContext
 
     public virtual DbSet<Nutrition> Nutritions { get; set; }
 
-    public virtual DbSet<RecipePost> RecipePosts { get; set; }
+    public virtual DbSet<Recipepost> Recipeposts { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
-
-    public virtual DbSet<SupplierStore> SupplierStores { get; set; }
 
     public virtual DbSet<Tag> Tags { get; set; }
 
@@ -48,7 +46,7 @@ public partial class CookingRecipeDbContext : DbContext
     public virtual DbSet<Video> Videos { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Name=ConnectionStrings:CookappDB");
+        => optionsBuilder.UseSqlServer("Name=CookappDB");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -69,18 +67,15 @@ public partial class CookingRecipeDbContext : DbContext
             entity.Property(e => e.Password)
                 .HasMaxLength(50)
                 .HasColumnName("password");
-            entity.Property(e => e.Phone)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .HasColumnName("phone");
             entity.Property(e => e.Roleid)
                 .HasMaxLength(50)
                 .HasColumnName("roleid");
+            entity.Property(e => e.Username)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("username");
 
-            entity.HasOne(d => d.Role).WithMany(p => p.Accounts)
-                .HasForeignKey(d => d.Roleid)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_account_role");
+            
         });
 
         modelBuilder.Entity<Blacklist>(entity =>
@@ -137,9 +132,6 @@ public partial class CookingRecipeDbContext : DbContext
             entity.Property(e => e.RefUser)
                 .HasMaxLength(50)
                 .HasColumnName("ref_user");
-            entity.Property(e => e.Status)
-                .HasMaxLength(50)
-                .HasColumnName("status");
 
             entity.HasOne(d => d.RefPostNavigation).WithMany(p => p.Comments)
                 .HasForeignKey(d => d.RefPost)
@@ -153,9 +145,7 @@ public partial class CookingRecipeDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.Content)
-                .HasMaxLength(50)
-                .HasColumnName("content");
+            entity.Property(e => e.Image1).HasColumnName("image");
         });
 
         modelBuilder.Entity<IngrePost>(entity =>
@@ -192,12 +182,6 @@ public partial class CookingRecipeDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .HasColumnName("name");
-            entity.Property(e => e.RefPost)
-                .HasMaxLength(50)
-                .HasColumnName("ref_post");
-            entity.Property(e => e.Type)
-                .HasMaxLength(50)
-                .HasColumnName("type");
         });
 
         modelBuilder.Entity<NutriPost>(entity =>
@@ -232,16 +216,13 @@ public partial class CookingRecipeDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .HasColumnName("name");
-            entity.Property(e => e.Type)
-                .HasMaxLength(50)
-                .HasColumnName("type");
         });
 
-        modelBuilder.Entity<RecipePost>(entity =>
+        modelBuilder.Entity<Recipepost>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_recipe_post");
 
-            entity.ToTable("recipe_posts");
+            entity.ToTable("recipeposts");
 
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
@@ -250,9 +231,6 @@ public partial class CookingRecipeDbContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("content");
             entity.Property(e => e.CreateTime).HasColumnName("create_time");
-            entity.Property(e => e.LocationId)
-                .HasMaxLength(50)
-                .HasColumnName("location_id");
             entity.Property(e => e.RefAccount)
                 .HasMaxLength(50)
                 .HasColumnName("ref_account");
@@ -273,20 +251,13 @@ public partial class CookingRecipeDbContext : DbContext
                 .HasColumnName("title");
             entity.Property(e => e.UpdateTime).HasColumnName("update_time");
 
-            entity.HasOne(d => d.Location).WithMany(p => p.RecipePosts)
-                .HasForeignKey(d => d.LocationId)
-                .HasConstraintName("FK_recipe_posts_supplier_store");
+           
 
-            entity.HasOne(d => d.RefAccountNavigation).WithMany(p => p.RecipePosts)
-                .HasForeignKey(d => d.RefAccount)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_recipe_posts_accounts");
-
-            entity.HasOne(d => d.RefImageNavigation).WithMany(p => p.RecipePosts)
+            entity.HasOne(d => d.RefImageNavigation).WithMany(p => p.Recipeposts)
                 .HasForeignKey(d => d.RefImage)
                 .HasConstraintName("FK_recipe_posts_images");
 
-            entity.HasOne(d => d.RefVideoNavigation).WithMany(p => p.RecipePosts)
+            entity.HasOne(d => d.RefVideoNavigation).WithMany(p => p.Recipeposts)
                 .HasForeignKey(d => d.RefVideo)
                 .HasConstraintName("FK_recipe_posts_videos");
         });
@@ -303,27 +274,6 @@ public partial class CookingRecipeDbContext : DbContext
             entity.Property(e => e.RoleName)
                 .HasMaxLength(50)
                 .HasColumnName("roleName");
-        });
-
-        modelBuilder.Entity<SupplierStore>(entity =>
-        {
-            entity.ToTable("supplier_store");
-
-            entity.Property(e => e.Id)
-                .HasMaxLength(50)
-                .HasColumnName("id");
-            entity.Property(e => e.Andress)
-                .HasMaxLength(50)
-                .HasColumnName("andress");
-            entity.Property(e => e.RefAccount)
-                .HasMaxLength(50)
-                .HasColumnName("ref_account");
-            entity.Property(e => e.X).HasColumnName("x");
-            entity.Property(e => e.Y).HasColumnName("y");
-
-            entity.HasOne(d => d.RefAccountNavigation).WithMany(p => p.SupplierStores)
-                .HasForeignKey(d => d.RefAccount)
-                .HasConstraintName("FK_supplier_store_accounts");
         });
 
         modelBuilder.Entity<Tag>(entity =>
