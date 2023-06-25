@@ -25,11 +25,11 @@ public partial class Recipepost
 
     public string? RefVideo { get; set; }
 
-    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    //public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
-    public virtual Account RefAccountNavigation { get; set; } = null!;
+    //public virtual Account RefAccountNavigation { get; set; } = null!;
 
-    public virtual Image? RefImageNavigation { get; set; }
+    //public virtual Image? RefImageNavigation { get; set; }
 
-    public virtual Video? RefVideoNavigation { get; set; }
+    //public virtual Video? RefVideoNavigation { get; set; }
 }

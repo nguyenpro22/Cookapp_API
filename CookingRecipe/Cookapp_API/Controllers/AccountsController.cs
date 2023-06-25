@@ -60,32 +60,34 @@ namespace Cookapp_API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<AccountDTO>> PutAccount(string id, AccountDTO account)
         {
-            AccountBLL bll = new AccountBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
-            List<AccountDTO> accounts = bll.GetAccounts();
+            
             if (id != account.Id)
             {
                 return Problem("Account Id is not match"); ;
             }
+            AccountBLL bll = new AccountBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            bll.UpdateAccount(id, account);
+            return account;
 
-            _context.Entry(account).State = EntityState.Modified;
+            //_context.Entry(account).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AccountExists(id))
-                {
-                    return Problem("Account has already existed!!");
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            //try
+            //{
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!AccountExists(id))
+            //    {
+            //        return Problem("Account has already existed!!");
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
 
-            return NoContent();
+            //return NoContent();
         }
 
         // POST: api/Accounts

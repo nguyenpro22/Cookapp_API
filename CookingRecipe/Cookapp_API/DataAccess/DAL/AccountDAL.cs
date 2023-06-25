@@ -40,7 +40,46 @@ namespace Cookapp_API.DataAccess.DAL
                 throw ex;
             }
         }
-        
+        public int UpdateAccount(string id, AccountDTO account)
+        {
+            try
+            {
+                string query = "update " + _TABLE_NAME_ACCOUNT;
+                string filed = " SET ";
+                if(account != null)
+                {
+                    if(!string.IsNullOrEmpty(account.username))
+                    {                        
+                        filed += " username='" + account.username + "'";
+                    }
+                    if(!string.IsNullOrEmpty(account.Password))
+                    {
+                        filed += (filed != " SET " ? "," : "") + " password='" + account.Password + "'";
+                    }
+                    if(account.Dob != DateTime.MinValue) 
+                    {
+                        filed += (filed != " SET " ? "," : "") + " dob='" + account.Dob.ToString("yyyy/MM/dd HH:mm:ss") + "'";
+                    }
+                    if(!string.IsNullOrEmpty(account.FullName)) 
+                    {
+                        filed += (filed != " SET " ? "," : "") + " fullname='" + account.FullName + "'";
+                    }
+                }
+                if (filed != " SET ")
+                {
+                    query += filed + " where id='" + id + "'";
+                    return ExecuteNonQuery(query);                    
+                }
+                else
+                    return 0;
+                                
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
 
     }
 }

@@ -133,9 +133,9 @@ public partial class CookingRecipeDbContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("ref_user");
 
-            entity.HasOne(d => d.RefPostNavigation).WithMany(p => p.Comments)
-                .HasForeignKey(d => d.RefPost)
-                .HasConstraintName("FK_comments_recipe_posts");
+            //entity.HasOne(d => d.RefPostNavigation).WithMany(p => p.Comments)
+            //    .HasForeignKey(d => d.RefPost)
+            //    .HasConstraintName("FK_comments_recipe_posts");
         });
 
         modelBuilder.Entity<Image>(entity =>
@@ -253,13 +253,13 @@ public partial class CookingRecipeDbContext : DbContext
 
            
 
-            entity.HasOne(d => d.RefImageNavigation).WithMany(p => p.Recipeposts)
-                .HasForeignKey(d => d.RefImage)
-                .HasConstraintName("FK_recipe_posts_images");
+            //entity.HasOne(d => d.RefImageNavigation).WithMany(p => p.Recipeposts)
+            //    .HasForeignKey(d => d.RefImage)
+            //    .HasConstraintName("FK_recipe_posts_images");
 
-            entity.HasOne(d => d.RefVideoNavigation).WithMany(p => p.Recipeposts)
-                .HasForeignKey(d => d.RefVideo)
-                .HasConstraintName("FK_recipe_posts_videos");
+            //entity.HasOne(d => d.RefVideoNavigation).WithMany(p => p.Recipeposts)
+            //    .HasForeignKey(d => d.RefVideo)
+            //    .HasConstraintName("FK_recipe_posts_videos");
         });
 
         modelBuilder.Entity<Role>(entity =>
