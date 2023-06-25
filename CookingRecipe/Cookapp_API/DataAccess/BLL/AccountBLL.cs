@@ -59,6 +59,22 @@ namespace Cookapp_API.DataAccess.BLL
                 throw ex;
             }
         }
+        public int CreateAccount(AccountDTO account)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AccountDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.CreateAccount(account);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
 
     }

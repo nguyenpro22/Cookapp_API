@@ -69,54 +69,21 @@ namespace Cookapp_API.Controllers
             bll.UpdateAccount(id, account);
             return account;
 
-            //_context.Entry(account).State = EntityState.Modified;
-
-            //try
-            //{
-            //    await _context.SaveChangesAsync();
-            //}
-            //catch (DbUpdateConcurrencyException)
-            //{
-            //    if (!AccountExists(id))
-            //    {
-            //        return Problem("Account has already existed!!");
-            //    }
-            //    else
-            //    {
-            //        throw;
-            //    }
-            //}
-
-            //return NoContent();
         }
 
         // POST: api/Accounts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Account>> PostAccount(Account account)
+        public async Task<ActionResult<AccountDTO>> PostAccount(AccountDTO account)
         {
           if (_context.Accounts == null)
           {
               return Problem("Entity set 'CookingRecipeDbContext.Accounts'  is null.");
           }
-            _context.Accounts.Add(account);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (AccountExists(account.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetAccount", new { id = account.Id }, account);
+            
+            AccountBLL bll = new AccountBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            bll.CreateAccount(account);
+            return account;
         }
 
         // DELETE: api/Accounts/5
