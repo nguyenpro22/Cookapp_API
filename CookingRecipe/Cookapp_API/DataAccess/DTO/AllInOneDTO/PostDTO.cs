@@ -11,21 +11,14 @@ namespace Cookapp_API.DataAccess.DTO.AllInOneDTO
 
             public string Title { get; set; } = null!;
 
-            public string ref_tag { get; set; } = null!;
 
             public string Content { get; set; } = null!;
 
             public DateTime create_time { get; set; }
 
             public DateTime update_time { get; set; }
-
-            public string ref_category { get; set; } = null!;
-
-            public string ref_account { get; set; } = null!;
-
-            public string? ref_image { get; set; }
-
-            public string? ref_video { get; set; }
+            public string catetitle { get; set; }
+           
 
         public PostDTO() { }
         public void InitEmptyValue() { }

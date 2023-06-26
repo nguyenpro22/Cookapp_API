@@ -69,5 +69,36 @@ namespace Cookapp_API.DataAccess.DAL
                 throw ex;
             }
         }
+        public List<PostDTO> GetPosts(List<string> ids)
+        {
+            try
+            {
+                string query = "Select a.id,a.title,a.content,a.create_time,a.update_time, c.catetitle from recipeposts a " +
+                    "inner join type_post b on a.ref_category = b.ref_post " +
+                    "inner join category c on b.ref_type=c.id ";
+                if (ids != null && ids.Count > 0)
+                    query += "where a.id in(" + GlobalFuncs.ArrayStringToStringFilter(ids) + ")";
+                List<Hashtable> arrHsObj;
+                arrHsObj = ExecuteArrayHastable(query);
+                PostDTO acc;
+                if (arrHsObj != null && arrHsObj.Count > 0)
+                {
+                    List<PostDTO> arrRes = new List<PostDTO>(arrHsObj.Count);
+                    for (int i = 0; i < arrHsObj.Count; i++)
+                    {
+                        acc = new PostDTO(arrHsObj[i]);
+                        arrRes.Add(acc);
+                    }
+                    return arrRes;
+                }
+                else
+                    return new List<PostDTO> { };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }

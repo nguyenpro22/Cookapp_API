@@ -29,12 +29,12 @@ namespace Cookapp_API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<PostDTO>>> GetRecipeposts()
         {
-          if (_context.Recipeposts == null)
-          {
-              return NotFound();
-          }
+            if (_context.Recipeposts == null)
+            {
+                return NotFound();
+            }
             AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
-            List<PostDTO> post = bll.GetPost();
+            List<PostDTO> post = bll.GetPosts(new List<string>() { "1","2"});
             return post;
         }
 
