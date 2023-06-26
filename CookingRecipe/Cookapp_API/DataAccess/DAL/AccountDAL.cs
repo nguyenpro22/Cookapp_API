@@ -84,31 +84,34 @@ namespace Cookapp_API.DataAccess.DAL
         {
             try
             {
-                string query = "insert "+ _TABLE_NAME_ACCOUNT;
+                string query = "insert into "+ _TABLE_NAME_ACCOUNT;
                 string field =" values ";
                 if (account != null)
                 {
+                    field += "('" + Guid.NewGuid().ToString() + "'";
+                    
                     if (!string.IsNullOrEmpty(account.username))
                     {
-                        field += "('" + account.username + "',";
+                        field += (field != " values " ? "," : "")+ "'" +  account.username + "'";
                     }
                     if (!string.IsNullOrEmpty(account.Password))
                     {
-                        field += (field != " SET " ? "," : "") + "'" + account.Password + "',";
+                        field += (field != " values " ? "," : "") + "'" + account.Password + "'";
                     }
-                    
+                    field += (field != " values " ? "," : "") + "'3'";
                     if (account.Dob != DateTime.MinValue)
                     {
-                        field += (field != " SET " ? "," : "") + "'" + account.Dob.ToString("yyyy/MM/dd HH:mm:ss") + "',";
+                        field += (field != " values " ? "," : "") + "'" + account.Dob.ToString("yyyy/MM/dd HH:mm:ss") + "'";
                     }
+                    field += (field != " values " ? "," : "") + "'True'";
                     if (!string.IsNullOrEmpty(account.FullName))
                     {
-                        field += (field != " SET " ? "," : "") + " '" + account.FullName + "',";
+                        field += (field != " values " ? "," : "") + " '" + account.FullName + "')";
                     }
                 }
-                if (field != " SET ")
+                if (field != " values ")
                 {
-                    
+                    query += field;
                     return ExecuteNonQuery(query);
                 }
                 else
