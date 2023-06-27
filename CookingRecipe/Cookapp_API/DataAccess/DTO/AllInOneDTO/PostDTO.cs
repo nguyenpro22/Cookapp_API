@@ -18,6 +18,13 @@ namespace Cookapp_API.DataAccess.DTO.AllInOneDTO
 
             public DateTime update_time { get; set; }
             public string catetitle { get; set; }
+            public int preptime { get; set; }
+            public int addtime { get; set; }
+            public int cooktime { get; set; }
+            public int totaltime { get; set; }
+            public string FullName { get;set; }
+            public Byte[] image { get;set; }
+            public string tagname { get;set; }
            
 
         public PostDTO() { }

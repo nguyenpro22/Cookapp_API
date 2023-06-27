@@ -42,23 +42,7 @@ namespace Cookapp_API.DataAccess.BLL
                 throw ex;
             }
         }
-        public List<PostDTO> GetPost()
-        {
-            try
-            {
-                if (_sqlProvider == ESqlProvider.SQLSERVER)
-                {
-                    DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
-                    return dal.GetPost();
-                }
-                else { throw new Exception("not support unknown sqlProvider"); }
-            }
-            catch (Exception ex)
-            {
 
-                throw ex;
-            }
-        }
         public List<PostDTO> GetPosts(List<string> ids)
         {
             try
