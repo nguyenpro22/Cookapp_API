@@ -1,5 +1,6 @@
 ﻿using Cookapp_API.DataAccess.DTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO;
+using NuGet.Protocol;
 using System.Collections;
 
 namespace Cookapp_API.DataAccess.DAL
@@ -52,7 +53,7 @@ namespace Cookapp_API.DataAccess.DAL
                     "left join accounts c on a.ref_account = c.id " +
                     "left join images d on a.ref_image = d.id " +
                     "left join tag_post f on a.id = f.ref_post " +
-                    "inner join tags g on f.ref_tag = g.id " ;
+                    "left join tags g on f.ref_tag = g.id " ;
 
                 //if (ids != null && ids.Count > 0)
                 //    query += "where a.id in(" + GlobalFuncs.ArrayStringToStringFilter(ids) + ")";
@@ -78,49 +79,53 @@ namespace Cookapp_API.DataAccess.DAL
                 throw ex;
             }
         }
-        //public int UpdatePost(string id, PostDTO post)
-        //{
-        //    try
-        //    {
-        //        string query = "update " + _TABLE_NAME_POST;
-        //        string filed = " SET ";
-        //        if (post != null)
-        //        {
-        //            if (!string.IsNullOrEmpty(post.Content))
-        //            {
-        //                filed += " content='" + post.Content + "'";
-        //            }
-        //            if (post.preptime >0 )
-        //            {
-        //                filed += (filed != " SET " ? "," : "") + " preptime='" + post.preptime + "'";
-        //            }
-        //            if (post.cooktime > 0)
-        //            {
-        //                filed += (filed != " SET " ? "," : "") + " cooktime='" + post.cooktime + "'";
-        //            }
-        //            if (post.addtime > 0)
-        //            {
-        //                filed += (filed != " SET " ? "," : "") + " addtime='" + post.addtime + "'";
-        //            }
-                    
-        //                filed += (filed != " SET " ? "," : "") + " update_time='" + DateTime.Now + "'";
-                    
-        //            if (post.image.)
-        //        }
-        //        if (filed != " SET ")
-        //        {
-        //            query += filed + " where id='" + id + "'";
-        //            return ExecuteNonQuery(query);
-        //        }
-        //        else
-        //            return 0;
+        public int UpdatePost(string id, PostDTO post)
+        {
+            try
+            {
+                string query = "update " + _TABLE_NAME_POST;
+                string filed = " SET ";
+                if (post != null)
+                {
+                    if (!string.IsNullOrEmpty(post.Content))
+                    {
+                        filed += " content='" + post.Content + "'";
+                    }
+                    if (post.preptime > 0)
+                    {
+                        filed += (filed != " SET " ? "," : "") + " preptime='" + post.preptime + "'";
+                    }
+                    if (post.cooktime > 0)
+                    {
+                        filed += (filed != " SET " ? "," : "") + " cooktime='" + post.cooktime + "'";
+                    }
+                    if (post.addtime > 0)
+                    {
+                        filed += (filed != " SET " ? "," : "") + " addtime='" + post.addtime + "'";
+                    }
 
-        //    }
-        //    catch (Exception ex)
-        //    {
+                    filed += (filed != " SET " ? "," : "") + " update_time='" + DateTime.Now + "'";
+                    if (post.image !=null)
+                    {
+                        filed += (filed != " SET " ? "," : "") + " image='" + post.image + "'";
+                    }    
+                    
+                    
+                }
+                if (filed != " SET ")
+                {
+                    query += filed + " where id='" + id + "'";
+                    return ExecuteNonQuery(query);
+                }
+                else
+                    return 0;
 
-        //        throw ex;
-        //    }
-        //}
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }

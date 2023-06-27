@@ -1,29 +1,27 @@
-﻿using Cookapp_API.Data;
-using System.Collections;
+﻿using System.Collections;
 using System.Globalization;
 using System.Reflection;
 
-namespace Cookapp_API.DataAccess.DTO
+namespace Cookapp_API.DataAccess.DTO.AllInOneDTO.AccountDTO
 {
-    public class AccountDTO
+    public class RegisterDTO
     {
-        public string Id { get; set; } = null!;
 
         public string username { get; set; } = null!;
 
         public string Password { get; set; } = null!;
 
-        public string Roleid { get; set; } = null!;
 
         public DateTime Dob { get; set; }
 
         public bool IsActive { get; set; }
 
         public string FullName { get; set; } = null!;
-        public AccountDTO() { }
+        public RegisterDTO() { }
+
         public void InitEmptyValue()
         { }
-        public AccountDTO(Hashtable hsObj)
+        public RegisterDTO(Hashtable hsObj)
         {
             CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
             Thread.CurrentThread.CurrentCulture = culture;
@@ -35,7 +33,7 @@ namespace Cookapp_API.DataAccess.DTO
 
             try
             {
-                PropertyInfo[] arrProInfo = this.GetType().GetProperties();
+                PropertyInfo[] arrProInfo = GetType().GetProperties();
                 PropertyInfo proInfo;
                 object objValue;
                 string sValue;

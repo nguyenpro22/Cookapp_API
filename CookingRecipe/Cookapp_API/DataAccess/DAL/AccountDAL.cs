@@ -1,4 +1,5 @@
-﻿using Cookapp_API.DataAccess.DTO;
+﻿using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccoountDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccountDTO;
 using System.Collections;
 
 namespace Cookapp_API.DataAccess.DAL
@@ -40,7 +41,7 @@ namespace Cookapp_API.DataAccess.DAL
                 throw ex;
             }
         }
-        public int UpdateAccount(string id, AccountDTO account)
+        public int UpdateAccount(string id, ProfileDTO account)
         {
             try
             {
@@ -80,7 +81,7 @@ namespace Cookapp_API.DataAccess.DAL
                 throw ex;
             }
         }
-        public int CreateAccount(AccountDTO account)
+        public int CreateAccount(RegisterDTO account)
         {
             try
             {

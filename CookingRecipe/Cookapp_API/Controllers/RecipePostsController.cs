@@ -34,7 +34,7 @@ namespace Cookapp_API.Controllers
                 return NotFound();
             }
             AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
-            List<PostDTO> post = bll.GetPosts(new List<string>() { "1","2"});
+            List<PostDTO> post = bll.GetPosts(new List<string>());
             return post;
         }
 
@@ -59,32 +59,15 @@ namespace Cookapp_API.Controllers
         // PUT: api/Recipeposts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRecipepost(string id, Recipepost recipepost)
+        public async Task<ActionResult<PostDTO>> PutRecipepost(string id, PostDTO post)
         {
-            if (id != recipepost.Id)
+            if (id != post.Id)
             {
                 return BadRequest();
             }
-
-            _context.Entry(recipepost).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RecipepostExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            bll.UpdatePost(id, post);
+            return post;
         }
 
         // POST: api/Recipeposts

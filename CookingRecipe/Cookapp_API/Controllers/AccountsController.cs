@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Cookapp_API.Data;
 using Cookapp_API.DataAccess.BLL;
 using Cookapp_API.DataAccess.DTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccoountDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccountDTO;
 
 namespace Cookapp_API.Controllers
 {
@@ -58,7 +60,7 @@ namespace Cookapp_API.Controllers
         // PUT: api/Accounts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<ActionResult<AccountDTO>> PutAccount(string id, AccountDTO account)
+        public async Task<ActionResult<ProfileDTO>> PutAccount(string id, ProfileDTO account)
         {
             
             if (id != account.Id)
@@ -74,7 +76,7 @@ namespace Cookapp_API.Controllers
         // POST: api/Accounts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<AccountDTO>> PostAccount(AccountDTO account)
+        public async Task<ActionResult<RegisterDTO>> PostAccount(RegisterDTO account)
         {
           if (_context.Accounts == null)
           {
