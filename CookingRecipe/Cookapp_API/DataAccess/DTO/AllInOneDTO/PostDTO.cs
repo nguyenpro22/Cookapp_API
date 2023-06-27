@@ -24,7 +24,7 @@ namespace Cookapp_API.DataAccess.DTO.AllInOneDTO
             public int totaltime { get; set; }
             public string FullName { get;set; }
             public Byte[] image { get;set; }
-            public string tagname { get;set; }
+            public string tag { get;set; }
            
 
         public PostDTO() { }

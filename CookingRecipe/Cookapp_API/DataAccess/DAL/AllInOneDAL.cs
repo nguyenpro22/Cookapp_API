@@ -48,12 +48,13 @@ namespace Cookapp_API.DataAccess.DAL
         {
             try
             {
-                string query = "Select a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime, b.catetitle, d.image, c.FullName, g.tagname from recipeposts a " +
+                string query = "Select a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime, b.catetitle, d.image, c.FullName, STRING_AGG(g.tagname,',') as tag from recipeposts a " +
                     "left join category b on a.ref_cate = b.id " +
                     "left join accounts c on a.ref_account = c.id " +
                     "left join images d on a.ref_image = d.id " +
                     "left join tag_post f on a.id = f.ref_post " +
-                    "left join tags g on f.ref_tag = g.id " ;
+                    "left join tags g on f.ref_tag = g.id " +
+                    "group by a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime, b.catetitle,d.image, c.FullName";
 
                 //if (ids != null && ids.Count > 0)
                 //    query += "where a.id in(" + GlobalFuncs.ArrayStringToStringFilter(ids) + ")";
