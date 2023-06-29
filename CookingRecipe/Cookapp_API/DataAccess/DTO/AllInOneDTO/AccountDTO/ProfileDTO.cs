@@ -17,6 +17,8 @@ namespace Cookapp_API.DataAccess.DTO.AllInOneDTO.AccountDTO
 
 
         public string FullName { get; set; } = null!;
+        public Byte[] avatar { get; set; }
+        public string Bio { get; set; }
         public ProfileDTO() { }
 
         public void InitEmptyValue()

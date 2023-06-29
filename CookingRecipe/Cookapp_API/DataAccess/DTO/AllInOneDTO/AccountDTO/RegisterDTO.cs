@@ -17,6 +17,8 @@ namespace Cookapp_API.DataAccess.DTO.AllInOneDTO.AccountDTO
         public bool IsActive { get; set; }
 
         public string FullName { get; set; } = null!;
+        public Byte[] avatar { get; set; }
+        public string Bio { get; set; }
         public RegisterDTO() { }
 
         public void InitEmptyValue()

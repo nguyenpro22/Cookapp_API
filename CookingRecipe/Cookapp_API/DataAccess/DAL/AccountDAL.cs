@@ -1,5 +1,6 @@
 ﻿using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccoountDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccountDTO;
+using Microsoft.Extensions.Hosting;
 using System.Collections;
 
 namespace Cookapp_API.DataAccess.DAL
@@ -65,6 +66,14 @@ namespace Cookapp_API.DataAccess.DAL
                     {
                         filed += (filed != " SET " ? "," : "") + " fullname='" + account.FullName + "'";
                     }
+                    if (account.avatar != null)
+                    {
+                        filed += (filed != " SET " ? "," : "") + "avatar = CONVERT(varbinary(max), '" + account.avatar + "')";
+                    }
+                    if (!string.IsNullOrEmpty(account.Bio))
+                    {
+                        filed += (filed != " SET " ? "," : "") + " Bio='" + account.Bio + "'";
+                    }
                 }
                 if (filed != " SET ")
                 {
@@ -107,7 +116,15 @@ namespace Cookapp_API.DataAccess.DAL
                     field += (field != " values " ? "," : "") + "'True'";
                     if (!string.IsNullOrEmpty(account.FullName))
                     {
-                        field += (field != " values " ? "," : "") + " '" + account.FullName + "')";
+                        field += (field != " values " ? "," : "") + " '" + account.FullName + "'";
+                    }
+                    if (account.avatar != null)
+                    {
+                        field += (field != " values " ? "," : "") + "CONVERT(varbinary(max), '" + account.avatar + "')";
+                    }
+                    if (!string.IsNullOrEmpty(account.Bio))
+                    {
+                        field += (field != " values " ? "," : "") + " '" + account.Bio + "')";
                     }
                 }
                 if (field != " values ")

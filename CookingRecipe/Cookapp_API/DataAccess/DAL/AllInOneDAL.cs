@@ -215,9 +215,9 @@ namespace Cookapp_API.DataAccess.DAL
                     {
                         filed += (filed != " values " ? "," : "") + "'" + post.RefAccount + "'";
                     }
-                   if (!string.IsNullOrEmpty(post.RefCategory))
+                   if (post.Image!=null)
                     {
-                        filed += (filed != " values " ? "," : "") + " CONVERT(varbinary(max), '" + post.Image + "'";
+                        filed += (filed != " values " ? "," : "") + " CONVERT(varbinary(max), '" + post.Image + "')";
                     }
 
                     if (!string.IsNullOrEmpty(post.RefCategory))
