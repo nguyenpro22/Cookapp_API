@@ -1,30 +1,37 @@
-﻿using Cookapp_API.Data;
-using System.Collections;
+﻿using System.Collections;
 using System.Globalization;
 using System.Reflection;
 
-namespace Cookapp_API.DataAccess.DTO.AllInOneDTO.AccoountDTO
+namespace Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO
 {
-    public class AccountDTO
+    public class PostDTO
     {
+
         public string Id { get; set; } = null!;
 
-        public string username { get; set; } = string.Empty;
+        public string Title { get; set; } = null!;
 
-        public string Password { get; set; } = string.Empty;
 
-        public string Roleid { get; set; } = null!;
+        public string Content { get; set; } = null!;
 
-        public DateTime Dob { get; set; }
+        public DateTime create_time { get; set; }
 
-        public bool IsActive { get; set; }
+        public DateTime update_time { get; set; }
+        public string catetitle { get; set; }
+        public int preptime { get; set; }
+        public int addtime { get; set; }
+        public int cooktime { get; set; }
+        public int totaltime { get; set; }
+        public string FullName { get; set; }
+        public byte[] image { get; set; } = null;
+        public string tag { get; set; }
+        public string ingredient { get; set; }
+        public string nutrition { get; set; }
 
-        public string FullName { get; set; } = null!;
-        public AccountDTO() { }
 
-        public void InitEmptyValue()
-        { }
-        public AccountDTO(Hashtable hsObj)
+        public PostDTO() { }
+        public void InitEmptyValue() { }
+        public PostDTO(Hashtable hsObj)
         {
             CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
             Thread.CurrentThread.CurrentCulture = culture;
@@ -92,5 +99,6 @@ namespace Cookapp_API.DataAccess.DTO.AllInOneDTO.AccoountDTO
                 throw ex;
             }
         }
+
     }
 }

@@ -2,19 +2,21 @@
 using System.Globalization;
 using System.Reflection;
 
-namespace Cookapp_API.DataAccess.DTO.AllInOneDTO
+namespace Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO
 {
-    public class LoginAccountDTO
-
+    public class UpdatePostDTO
     {
-        public string username { get; set; } = null!;
+        public string Id { get; set; } = null!;
+        public string Title { get; set; } = null!;
+        public string Content { get; set; } = null!;
+        public int preptime { get; set; }
+        public int addtime { get; set; }
+        public int cooktime { get; set; }
 
-        public string hashpassword { get; set; } = null!;
 
-        
-        public LoginAccountDTO() { }
+        public UpdatePostDTO() { }
         public void InitEmptyValue() { }
-        public LoginAccountDTO(Hashtable hsObj)
+        public UpdatePostDTO(Hashtable hsObj)
         {
             CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
             Thread.CurrentThread.CurrentCulture = culture;
@@ -26,7 +28,7 @@ namespace Cookapp_API.DataAccess.DTO.AllInOneDTO
 
             try
             {
-                PropertyInfo[] arrProInfo = this.GetType().GetProperties();
+                PropertyInfo[] arrProInfo = GetType().GetProperties();
                 PropertyInfo proInfo;
                 object objValue;
                 string sValue;
@@ -82,5 +84,6 @@ namespace Cookapp_API.DataAccess.DTO.AllInOneDTO
                 throw ex;
             }
         }
+
     }
 }

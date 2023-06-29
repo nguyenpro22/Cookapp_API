@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Cookapp_API.Data;
 using Cookapp_API.DataAccess.BLL;
-using Cookapp_API.DataAccess.DTO.AllInOneDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
 
 namespace Cookapp_API.Controllers
 {
@@ -40,26 +40,21 @@ namespace Cookapp_API.Controllers
 
         // GET: api/Recipeposts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Recipepost>> GetRecipepost(string id)
+        public async Task<ActionResult<List<PostDTO>>> GetRecipepost(string id)
         {
           if (_context.Recipeposts == null)
           {
               return NotFound();
           }
-            var recipepost = await _context.Recipeposts.FindAsync(id);
-
-            if (recipepost == null)
-            {
-                return NotFound();
-            }
-
-            return recipepost;
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            List<PostDTO> post = bll.GetPostByID(id);
+            return post;
         }
 
         // PUT: api/Recipeposts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<ActionResult<PostDTO>> PutRecipepost(string id, PostDTO post)
+        public async Task<ActionResult<UpdatePostDTO>> PutRecipepost(string id, UpdatePostDTO post)
         {
             if (id != post.Id)
             {

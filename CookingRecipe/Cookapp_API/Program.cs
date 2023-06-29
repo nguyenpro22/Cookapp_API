@@ -1,6 +1,9 @@
 using Cookapp_API.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Configuration;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -24,8 +27,22 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDbContext<CookingRecipeDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CookappDB")));
-
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//    .AddJwtBearer(options =>
+//    {
+//        options.TokenValidationParameters = new TokenValidationParameters
+//        {
+//            ValidateIssuer = true,
+//            ValidateAudience = true,
+//            ValidateLifetime = true,
+//            ValidateIssuerSigningKey = true,
+//            ValidIssuer = "thao",
+//            ValidAudience = "thao",
+//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtConfig:Secret"]))
+//        };
+//    });
 var app = builder.Build();
+//await app.RunAsync();
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())

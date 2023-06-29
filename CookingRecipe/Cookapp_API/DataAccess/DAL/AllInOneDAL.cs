@@ -1,5 +1,7 @@
-﻿using Cookapp_API.DataAccess.DTO;
+﻿using Cookapp_API.Data;
+using Cookapp_API.DataAccess.DTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
 using NuGet.Protocol;
 using System.Collections;
 
@@ -48,13 +50,16 @@ namespace Cookapp_API.DataAccess.DAL
         {
             try
             {
-                string query = "Select a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime, b.catetitle, d.image, c.FullName, STRING_AGG(g.tagname,',') as tag from recipeposts a " +
+                string query = "Select a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName, STRING_AGG(g.tagname,',') as tag, STRING_AGG(i.name,',') as ingredient, STRING_AGG(k.name,',') as nutrition from recipeposts a " +
                     "left join category b on a.ref_cate = b.id " +
                     "left join accounts c on a.ref_account = c.id " +
-                    "left join images d on a.ref_image = d.id " +
                     "left join tag_post f on a.id = f.ref_post " +
                     "left join tags g on f.ref_tag = g.id " +
-                    "group by a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime, b.catetitle,d.image, c.FullName";
+                    "left join ingre_post h on a.id = h.ref_post " +
+                    "left join ingredients i on h.ref_ingredient = i.id "+
+                    "left join nutri_post j on a.id = j.ref_post "+
+                    "left join nutrition k on j.ref_nutri = k.Id " +
+                    "group by a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName";
 
                 //if (ids != null && ids.Count > 0)
                 //    query += "where a.id in(" + GlobalFuncs.ArrayStringToStringFilter(ids) + ")";
@@ -80,7 +85,52 @@ namespace Cookapp_API.DataAccess.DAL
                 throw ex;
             }
         }
-        public int UpdatePost(string id, PostDTO post)
+        public List<PostDTO> GetPostbyID(string id)
+        {
+            try
+            {
+                string query = "Select a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName, STRING_AGG(g.tagname,',') as tag, STRING_AGG(i.name,',') as ingredient, STRING_AGG(k.name,',') as nutrition from recipeposts a " +
+                    "left join category b on a.ref_cate = b.id " +
+                    "left join accounts c on a.ref_account = c.id " +
+                    "left join tag_post f on a.id = f.ref_post " +
+                    "left join tags g on f.ref_tag = g.id " +
+                    "left join ingre_post h on a.id = h.ref_post " +
+                    "left join ingredients i on h.ref_ingredient = i.id " +
+                    "left join nutri_post j on a.id = j.ref_post " +
+                    "left join nutrition k on j.ref_nutri = k.Id " +
+                    "where a.id='" + id + "' " +
+                    "group by a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName";
+
+                //if (ids != null && ids.Count > 0)
+                //    query += "where a.id in(" + GlobalFuncs.ArrayStringToStringFilter(ids) + ")";
+
+                List<Hashtable> arrHsObj;
+                arrHsObj = ExecuteArrayHastable(query);
+                PostDTO acc;
+                if (arrHsObj != null && arrHsObj.Count > 0)
+                {
+                    List<PostDTO> arrRes = new List<PostDTO>(arrHsObj.Count);
+                    for (int i = 0; i < arrHsObj.Count; i++)
+                    {
+                        acc = new PostDTO(arrHsObj[i]);
+                        arrRes.Add(acc);
+                    }
+                    return arrRes;
+                }
+                else
+                    return new List<PostDTO> { };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+        }
+            
+        
+        public int UpdatePost(string id, UpdatePostDTO post)
         {
             try
             {
@@ -88,10 +138,17 @@ namespace Cookapp_API.DataAccess.DAL
                 string filed = " SET ";
                 if (post != null)
                 {
+                    if (!string.IsNullOrEmpty(post.Title))
+                    {
+                        filed += " title='" + post.Title + "'";
+                    }
+                    
                     if (!string.IsNullOrEmpty(post.Content))
                     {
-                        filed += " content='" + post.Content + "'";
+                        filed += (filed != " SET " ? "," : "") + " content='" + post.Content + "'";
                     }
+                        filed += (filed != " SET " ? "," : "") + " update_time='" + DateTime.Now + "'";
+
                     if (post.preptime > 0)
                     {
                         filed += (filed != " SET " ? "," : "") + " preptime='" + post.preptime + "'";
@@ -104,14 +161,13 @@ namespace Cookapp_API.DataAccess.DAL
                     {
                         filed += (filed != " SET " ? "," : "") + " addtime='" + post.addtime + "'";
                     }
+                    filed += (filed != " SET " ? "," : "") + " totaltime='" + (post.preptime + post.cooktime + post.addtime).ToString() + "'";
+                    //if (!string.IsNullOrEmpty(post.tag))
+                    //{
+                    //    filed += (filed != " SET " ? "," : "") + " tag='" + post.tag + "'";
+                    //}    
 
-                    filed += (filed != " SET " ? "," : "") + " update_time='" + DateTime.Now + "'";
-                    if (post.image !=null)
-                    {
-                        filed += (filed != " SET " ? "," : "") + " image='" + post.image + "'";
-                    }    
-                    
-                    
+
                 }
                 if (filed != " SET ")
                 {
