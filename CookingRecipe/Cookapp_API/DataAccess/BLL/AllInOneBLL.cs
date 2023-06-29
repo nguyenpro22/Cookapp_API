@@ -1,5 +1,6 @@
 ﻿using Cookapp_API.DataAccess.DTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccountDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
 
 namespace Cookapp_API.DataAccess.BLL
@@ -93,6 +94,22 @@ namespace Cookapp_API.DataAccess.BLL
             catch (Exception ex)
             {
 
+                throw ex;
+            }
+        }
+        public int CreatePost(CreatePostDTO post)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.CreatePost(post);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
                 throw ex;
             }
         }

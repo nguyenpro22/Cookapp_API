@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Cookapp_API.Data;
 using Cookapp_API.DataAccess.BLL;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
+using Microsoft.Extensions.Hosting;
 
 namespace Cookapp_API.Controllers
 {
@@ -68,30 +69,16 @@ namespace Cookapp_API.Controllers
         // POST: api/Recipeposts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Recipepost>> PostRecipepost(Recipepost recipepost)
+        public async Task<ActionResult<CreatePostDTO>> PostRecipepost(CreatePostDTO post)
         {
           if (_context.Recipeposts == null)
           {
               return Problem("Entity set 'CookingRecipeDbContext.Recipeposts'  is null.");
           }
-            _context.Recipeposts.Add(recipepost);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (RecipepostExists(recipepost.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetRecipepost", new { id = recipepost.Id }, recipepost);
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            bll.CreatePost(post);
+            return post;
+           
         }
 
         // DELETE: api/Recipeposts/5

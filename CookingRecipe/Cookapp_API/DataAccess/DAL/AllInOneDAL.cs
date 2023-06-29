@@ -184,5 +184,79 @@ namespace Cookapp_API.DataAccess.DAL
                 throw ex;
             }
         }
+        public int CreatePost(CreatePostDTO post)
+        {
+            try
+            {
+                string query = "insert into " + _TABLE_NAME_POST;
+                string filed = " values ";
+                if (post != null)
+                {
+                    filed+= "('" + Guid.NewGuid().ToString() + "'";
+                    if (!string.IsNullOrEmpty(post.Title))
+                    {
+                        filed += (filed != " values " ? "," : "") + "'" + post.Title + "'";
+                    }
+
+                    if (!string.IsNullOrEmpty(post.RefTag))
+                    {
+                        filed += (filed != " values " ? "," : "") + "'" + post.RefTag + "'";
+                    }
+                     if (!string.IsNullOrEmpty(post.Content))
+                    {
+                        filed += (filed != " values " ? "," : "") + "'" + post.Content + "'";
+                    }
+                        filed += (filed != " values " ? "," : "") + "'" + DateTime.Now + "'";
+                    
+                    
+                        filed += (filed != " values " ? "," : "") + "null";
+                    
+                    if (!string.IsNullOrEmpty(post.RefAccount))
+                    {
+                        filed += (filed != " values " ? "," : "") + "'" + post.RefAccount + "'";
+                    }
+                   if (!string.IsNullOrEmpty(post.RefCategory))
+                    {
+                        filed += (filed != " values " ? "," : "") + " CONVERT(varbinary(max), '" + post.Image + "'";
+                    }
+
+                    if (!string.IsNullOrEmpty(post.RefCategory))
+                    {
+                        filed += (filed != " values " ? "," : "") + "'" + post.RefCategory + "'";
+                    }
+                    if (post.preptime > 0)
+                    {
+                        filed += (filed != " values " ? "," : "") + "'" + post.preptime + "'";
+                    }
+                    if (post.addtime > 0)
+                    {
+                        filed += (filed != " values " ? "," : "") + "'" + post.addtime + "'";
+                    }
+
+                    if (post.cooktime > 0)
+                    {
+                        filed += (filed != " values " ? "," : "") + "'" + post.cooktime + "'";
+                    }
+                    
+                    filed += (filed != " values " ? "," : "") + "'" + (post.preptime + post.cooktime + post.addtime).ToString() + "')";
+                    
+
+
+                }
+                if (filed != " values ")
+                {
+                    query += filed;
+                    return ExecuteNonQuery(query);
+                }
+                else
+                    return 0;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }
