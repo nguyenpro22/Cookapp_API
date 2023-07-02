@@ -142,5 +142,30 @@ namespace Cookapp_API.DataAccess.DAL
                 throw ex;
             }
         }
+
+        public LoginResponse isAuthenticated(string username, string password)
+        {
+          try
+            {
+                //string query = "create Procedure Authorized_Account @username varchar(100), @pass varchar(100)\r\nas\r\nbegin\r\nDeclare @rowcount int;\r\nSelect @rowcount = COUNT(@username) from accounts\r\nwhere ((username LIKE @username) AND (password LIKE @pass))\r\nif  (@rowCount > 0) \r\nBEGIN SELECT * from\r\naccounts where username = @username END \r\nELSE \r\nSELECT 0\r\nend\r\ngo "
+
+                //string query = "exec Authorized_Account " + "'" + username + "', '" + password + "'";
+                string query = "select top 1 * from Accounts where username like '" + username + "' and password like '" + password + "'";
+                Hashtable res = ExecuteHashtable(query);
+                if (res != null)
+                {
+                    return new LoginResponse(res);
+                }
+                else
+                    return null;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+            
+        }
     }
 }

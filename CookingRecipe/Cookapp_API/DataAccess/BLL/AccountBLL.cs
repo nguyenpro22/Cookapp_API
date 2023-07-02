@@ -1,4 +1,5 @@
-﻿using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccoountDTO;
+﻿using Cookapp_API.Data;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccoountDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccountDTO;
 
 namespace Cookapp_API.DataAccess.BLL
@@ -76,7 +77,23 @@ namespace Cookapp_API.DataAccess.BLL
                 throw ex;
             }
         }
+        public LoginResponse isAuthenticated (string username, string password)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AccountDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.isAuthenticated(username,password);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
+        }
 
     }
 }
