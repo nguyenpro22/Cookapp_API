@@ -68,7 +68,7 @@ namespace Cookapp_API.DataAccess.DAL
                     }
                     if (account.avatar != null)
                     {
-                        filed += (filed != " SET " ? "," : "") + "avatar = CONVERT(varbinary(max), '" + account.avatar + "')";
+                        filed += (filed != " SET " ? "," : "") + "avatar = CONVERT(varbinary(max), '" + Convert.ToBase64String(account.avatar) + "')";
                     }
                     if (!string.IsNullOrEmpty(account.Bio))
                     {
@@ -120,7 +120,7 @@ namespace Cookapp_API.DataAccess.DAL
                     }
                     if (account.avatar != null)
                     {
-                        field += (field != " values " ? "," : "") + "CONVERT(varbinary(max), '" + account.avatar + "')";
+                        field += (field != " values " ? "," : "") + "CONVERT(varbinary(max), '" + Convert.ToBase64String(account.avatar) + "')";
                     }
                     if (!string.IsNullOrEmpty(account.Bio))
                     {

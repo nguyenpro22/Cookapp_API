@@ -41,13 +41,12 @@ namespace Cookapp_API.Controllers
                 var tokenStr = GenerateJSONWebToken(username, password);
                 Cookapp_API.DataAccess.DTO.AllInOneDTO.AccountDTO.Token token = new Cookapp_API.DataAccess.DTO.AllInOneDTO.AccountDTO.Token() { AccessToken = tokenStr };
                 //string jsonRes = Newtonsoft.Json.JsonConvert.SerializeObject(token);
-                LoginResponse response = new LoginResponse();
-                response.username = username;
-                response.Password = password;
-                response.token = token;
+                
                 //
                 AccountBLL bll = new AccountBLL(_config["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
                 LoginResponse account =  bll.isAuthenticated(username, password);
+                account.username = username;
+                account.Password = password;
                 account.token = token;
                 //abc
 
@@ -63,7 +62,7 @@ namespace Cookapp_API.Controllers
                 else
                 {
                     res.Success = false;
-                    res.Result = response;
+                    res.Result = account;
                     res.ResponseMessage = "Incorrect Username or Password";
                     res.ResponseCode = 401;
                     return res;

@@ -27,6 +27,7 @@ namespace Cookapp_API.Controllers
 
         // GET: api/Accounts
         [HttpGet]
+        
         public async Task<ActionResult<List<AccountDTO>>> GetAccounts()
         {
           if (_context.Accounts == null)

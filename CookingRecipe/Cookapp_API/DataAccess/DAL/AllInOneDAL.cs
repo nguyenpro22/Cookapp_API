@@ -218,7 +218,7 @@ namespace Cookapp_API.DataAccess.DAL
                     }
                    if (post.Image!=null)
                     {
-                        filed += (filed != " values " ? "," : "") + " CONVERT(varbinary(max), '" + post.Image + "')";
+                        filed += (filed != " values " ? "," : "") + " CONVERT(varbinary(max), '" + Convert.ToBase64String(post.Image) + "')";
                     }
 
                     if (!string.IsNullOrEmpty(post.RefCategory))
