@@ -1,23 +1,26 @@
-﻿using System.Collections;
+﻿using Cookapp_API.Data;
+using System.Collections;
 using System.Globalization;
 using System.Reflection;
 
-namespace Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO
+namespace Cookapp_API.DataAccess.DTO.AllInOneDTO.CommentDTO
 {
-    public class UpdatePostDTO
+    public class CommentDTO
     {
         public string Id { get; set; } = null!;
-        public string Title { get; set; } = null!;
+
         public string Content { get; set; } = null!;
-        public Byte[] Image { get; set; }
-        public int preptime { get; set; }
-        public int addtime { get; set; }
-        public int cooktime { get; set; }
 
+        public TimeSpan create_time { get; set; }
 
-        public UpdatePostDTO() { }
+        public string ref_user { get; set; } = null!;
+
+        public string? ref_post { get; set; }
+        public string fullname { get; set; }
+        public Byte[] avatar { get; set; }
+        public CommentDTO() { }
         public void InitEmptyValue() { }
-        public UpdatePostDTO(Hashtable hsObj)
+        public CommentDTO(Hashtable hsObj)
         {
             CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
             Thread.CurrentThread.CurrentCulture = culture;
@@ -85,6 +88,7 @@ namespace Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO
                 throw ex;
             }
         }
+
 
     }
 }

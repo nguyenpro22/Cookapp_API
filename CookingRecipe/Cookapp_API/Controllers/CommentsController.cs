@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Cookapp_API.Data;
+using Cookapp_API.DataAccess.BLL;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccoountDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.CommentDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
 
 namespace Cookapp_API.Controllers
 {
@@ -14,39 +18,40 @@ namespace Cookapp_API.Controllers
     public class CommentsController : ControllerBase
     {
         private readonly CookingRecipeDbContext _context;
-
-        public CommentsController(CookingRecipeDbContext context)
+        private IConfiguration _configuration;
+        public CommentsController(CookingRecipeDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         // GET: api/Comments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
+
+        public async Task<ActionResult<List<CommentDTO>>> GetComments()
         {
-          if (_context.Comments == null)
-          {
-              return NotFound();
-          }
-            return await _context.Comments.ToListAsync();
+            if (_context.Comments == null)
+            {
+                return NotFound();
+            }
+            //return await _context.Accounts.ToListAsync();
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            List<CommentDTO> comments = bll.GetComments(new List<string>());
+            return comments;
         }
 
         // GET: api/Comments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Comment>> GetComment(string id)
+        public async Task<ActionResult<List<CommentDTO>>> GetCommentsByPostID(string id)
         {
-          if (_context.Comments == null)
-          {
-              return NotFound();
-          }
-            var comment = await _context.Comments.FindAsync(id);
-
-            if (comment == null)
+            if (_context.Comments == null)
             {
                 return NotFound();
             }
+            AllInOneBLL bll = new AllInOneBLL(_configuration["ConnectionStrings:CookappDB"], DataAccess.ESqlProvider.SQLSERVER, 120);
+            List<CommentDTO> comments = bll.GetCommentsByPostID(id);
+            return comments;
 
-            return comment;
         }
 
         // PUT: api/Comments/5

@@ -2,6 +2,7 @@
 using Cookapp_API.Data;
 using Cookapp_API.DataAccess.DTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.CommentDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
 using NuGet.Protocol;
 using System.Collections;
@@ -13,7 +14,7 @@ namespace Cookapp_API.DataAccess.DAL
         public const string _TABLE_NAME_ACCOUNT = "Accounts";
         public const string _TABLE_NAME_POST = "recipeposts";
         public const string _TABLE_NAME_CATEGORY = "category";
-        public const string _TABLE_NAME_BLACKLIST = "blacklist";
+        public const string _TABLE_NAME_COMMENT = "comments";
         public AllInOneDAL() : base() { }
 
         public AllInOneDAL(string connectionString) : base(connectionString) { }
@@ -46,7 +47,7 @@ namespace Cookapp_API.DataAccess.DAL
                 throw ex;
             }
         }
-        
+
         public List<PostDTO> GetPosts(List<string> ids)
         {
             try
@@ -57,8 +58,8 @@ namespace Cookapp_API.DataAccess.DAL
                     "left join tag_post f on a.id = f.ref_post " +
                     "left join tags g on f.ref_tag = g.id " +
                     "left join ingre_post h on a.id = h.ref_post " +
-                    "left join ingredients i on h.ref_ingredient = i.id "+
-                    "left join nutri_post j on a.id = j.ref_post "+
+                    "left join ingredients i on h.ref_ingredient = i.id " +
+                    "left join nutri_post j on a.id = j.ref_post " +
                     "left join nutrition k on j.ref_nutri = k.Id " +
                     "group by a.id,a.title,a.content,a.create_time,a.update_time, a.cooktime,a.addtime,a.preptime,a.totaltime,a.image, b.catetitle, c.FullName";
 
@@ -129,8 +130,8 @@ namespace Cookapp_API.DataAccess.DAL
 
 
         }
-            
-        
+
+
         public int UpdatePost(string id, UpdatePostDTO post)
         {
             try
@@ -143,12 +144,16 @@ namespace Cookapp_API.DataAccess.DAL
                     {
                         filed += " title='" + post.Title + "'";
                     }
-                    
+
                     if (!string.IsNullOrEmpty(post.Content))
                     {
                         filed += (filed != " SET " ? "," : "") + " content='" + post.Content + "'";
                     }
-                        filed += (filed != " SET " ? "," : "") + " update_time='" + DateTime.Now + "'";
+                    filed += (filed != " SET " ? "," : "") + " update_time='" + DateTime.Now + "'";
+                    if (post.Image != null)
+                    {
+                        filed += (filed != " values " ? "," : "") + " CONVERT(varbinary(max), '" + Convert.ToBase64String(post.Image) + "')";
+                    }
 
                     if (post.preptime > 0)
                     {
@@ -193,7 +198,7 @@ namespace Cookapp_API.DataAccess.DAL
                 string filed = " values ";
                 if (post != null)
                 {
-                    filed+= "('" + Guid.NewGuid().ToString() + "'";
+                    filed += "('" + Guid.NewGuid().ToString() + "'";
                     if (!string.IsNullOrEmpty(post.Title))
                     {
                         filed += (filed != " values " ? "," : "") + "'" + post.Title + "'";
@@ -203,20 +208,20 @@ namespace Cookapp_API.DataAccess.DAL
                     {
                         filed += (filed != " values " ? "," : "") + "'" + post.RefTag + "'";
                     }
-                     if (!string.IsNullOrEmpty(post.Content))
+                    if (!string.IsNullOrEmpty(post.Content))
                     {
                         filed += (filed != " values " ? "," : "") + "'" + post.Content + "'";
                     }
-                        filed += (filed != " values " ? "," : "") + "'" + DateTime.Now + "'";
-                    
-                    
-                        filed += (filed != " values " ? "," : "") + "null";
-                    
+                    filed += (filed != " values " ? "," : "") + "'" + DateTime.Now + "'";
+
+
+                    filed += (filed != " values " ? "," : "") + "null";
+
                     if (!string.IsNullOrEmpty(post.RefAccount))
                     {
                         filed += (filed != " values " ? "," : "") + "'" + post.RefAccount + "'";
                     }
-                   if (post.Image!=null)
+                    if (post.Image != null)
                     {
                         filed += (filed != " values " ? "," : "") + " CONVERT(varbinary(max), '" + Convert.ToBase64String(post.Image) + "')";
                     }
@@ -238,9 +243,9 @@ namespace Cookapp_API.DataAccess.DAL
                     {
                         filed += (filed != " values " ? "," : "") + "'" + post.cooktime + "'";
                     }
-                    
+
                     filed += (filed != " values " ? "," : "") + "'" + (post.preptime + post.cooktime + post.addtime).ToString() + "')";
-                    
+
 
 
                 }
@@ -259,6 +264,69 @@ namespace Cookapp_API.DataAccess.DAL
                 throw ex;
             }
         }
-        
+        public List<CommentDTO> GetComments(List<string> ids)
+        {
+            try
+            {
+                string query = "Select a.id, a.content, a.ref_post, a.ref_user, a.create_time, b.FullName, b.avatar  from " + _TABLE_NAME_COMMENT + " a " +
+                    "left join " + _TABLE_NAME_ACCOUNT + " b on a.ref_user = b.id ";
+                //if (ids != null && ids.Count > 0)
+                //    query += "where a.id in(" + GlobalFuncs.ArrayStringToStringFilter(ids) + ")";
+                List<Hashtable> arrHsObj;
+                arrHsObj = ExecuteArrayHastable(query);
+                CommentDTO acc;
+                if (arrHsObj != null && arrHsObj.Count > 0)
+                {
+                    List<CommentDTO> arrRes = new List<CommentDTO>(arrHsObj.Count);
+                    for (int i = 0; i < arrHsObj.Count; i++)
+                    {
+                        acc = new CommentDTO(arrHsObj[i]);
+                        arrRes.Add(acc);
+                    }
+                    return arrRes;
+                }
+                else
+                    return new List<CommentDTO> { };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+        public List<CommentDTO> GetCommentbyPostID(string id)
+        {
+            try
+            {
+                string query = "Select a.id, a.content, a.ref_post, a.ref_user, a.create_time, b.FullName, b.avatar  from " + _TABLE_NAME_COMMENT + " a " +
+                    "left join " + _TABLE_NAME_ACCOUNT + " b on a.ref_user = b.id " +
+                    "where ref_post = '" + id + "'";
+
+                //if (ids != null && ids.Count > 0)
+                //    query += "where a.id in(" + GlobalFuncs.ArrayStringToStringFilter(ids) + ")";
+
+                List<Hashtable> arrHsObj;
+                arrHsObj = ExecuteArrayHastable(query);
+                CommentDTO acc;
+                if (arrHsObj != null && arrHsObj.Count > 0)
+                {
+                    List<CommentDTO> arrRes = new List<CommentDTO>(arrHsObj.Count);
+                    for (int i = 0; i < arrHsObj.Count; i++)
+                    {
+                        acc = new CommentDTO(arrHsObj[i]);
+                        arrRes.Add(acc);
+                    }
+                    return arrRes;
+                }
+                else
+                    return new List<CommentDTO> { };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }

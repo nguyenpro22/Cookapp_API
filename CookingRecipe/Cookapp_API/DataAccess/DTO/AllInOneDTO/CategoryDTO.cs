@@ -8,9 +8,8 @@ namespace Cookapp_API.DataAccess.DTO.AllInOneDTO
     {
         public string Id { get; set; } = null!;
 
-        public string Title { get; set; } = null!;
+        public string catetitle { get; set; } = null!;
 
-        public string Content { get; set; } = null!;
         public CategoryDTO() { }
         public void InitEmptyValue() { }
         public CategoryDTO(Hashtable hsObj)
