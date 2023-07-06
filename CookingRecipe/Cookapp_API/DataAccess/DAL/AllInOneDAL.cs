@@ -3,6 +3,7 @@ using Cookapp_API.Data;
 using Cookapp_API.DataAccess.DTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.CommentDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.PlanDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
 using NuGet.Protocol;
 using System.Collections;
@@ -15,6 +16,8 @@ namespace Cookapp_API.DataAccess.DAL
         public const string _TABLE_NAME_POST = "recipeposts";
         public const string _TABLE_NAME_CATEGORY = "category";
         public const string _TABLE_NAME_COMMENT = "comments";
+        public const string _TABLE_NAME_PLAN = "[CookingRecipeDB].[dbo].[plan]";
+        public const string _TABLE_NAME_POSTPLAN = "post_plan";
         public AllInOneDAL() : base() { }
 
         public AllInOneDAL(string connectionString) : base(connectionString) { }
@@ -327,6 +330,71 @@ namespace Cookapp_API.DataAccess.DAL
 
                 throw ex;
             }
+        }
+        public List<GetPlanDTO> GetPlan(List<string> ids)
+        {
+            try
+            {
+                string query = "SELECT a.starttime, a.endtime, a.dayinschedule, a.ref_account, b.ref_post, c.title FROM " + _TABLE_NAME_PLAN + " a " +
+                    "left join " + _TABLE_NAME_POSTPLAN + " b on a.id = b.ref_plan " +
+                    "left join " + _TABLE_NAME_POST + " c on b.ref_post = c.id ";
+                //if (ids != null && ids.Count > 0)
+                //    query += "where a.id in(" + GlobalFuncs.ArrayStringToStringFilter(ids) + ")";
+                List<Hashtable> arrHsObj;
+                arrHsObj = ExecuteArrayHastable(query);
+                GetPlanDTO acc;
+                if (arrHsObj != null && arrHsObj.Count > 0)
+                {
+                    List<GetPlanDTO> arrRes = new List<GetPlanDTO>(arrHsObj.Count);
+                    for (int i = 0; i < arrHsObj.Count; i++)
+                    {
+                        acc = new GetPlanDTO(arrHsObj[i]);
+                        arrRes.Add(acc);
+                    }
+                    return arrRes;
+                }
+                else
+                    return new List<GetPlanDTO> { };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+        public List<GetPlanDTO> GetPlanByAccountID(string id)
+        {
+            try
+            {
+                string query = "SELECT a.starttime, a.endtime, a.dayinschedule, a.ref_account, b.ref_post, c.title FROM " + _TABLE_NAME_PLAN + " a " +
+                    "left join " + _TABLE_NAME_POSTPLAN + " b on a.id = b.ref_plan " +
+                    "left join " + _TABLE_NAME_POST + " c on b.ref_post = c.id " +
+                    "where a.ref_account = '" + id + "'";
+                //if (ids != null && ids.Count > 0)
+                //    query += "where a.id in(" + GlobalFuncs.ArrayStringToStringFilter(ids) + ")";
+                List<Hashtable> arrHsObj;
+                arrHsObj = ExecuteArrayHastable(query);
+                GetPlanDTO acc;
+                if (arrHsObj != null && arrHsObj.Count > 0)
+                {
+                    List<GetPlanDTO> arrRes = new List<GetPlanDTO>(arrHsObj.Count);
+                    for (int i = 0; i < arrHsObj.Count; i++)
+                    {
+                        acc = new GetPlanDTO(arrHsObj[i]);
+                        arrRes.Add(acc);
+                    }
+                    return arrRes;
+                }
+                else
+                    return new List<GetPlanDTO> { };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
     }
 }

@@ -2,6 +2,7 @@
 using Cookapp_API.DataAccess.DTO.AllInOneDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.AccountDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.CommentDTO;
+using Cookapp_API.DataAccess.DTO.AllInOneDTO.PlanDTO;
 using Cookapp_API.DataAccess.DTO.AllInOneDTO.PostDTO;
 
 namespace Cookapp_API.DataAccess.BLL
@@ -81,6 +82,23 @@ namespace Cookapp_API.DataAccess.BLL
                 throw ex;
             }
         }
+        public List<GetPlanDTO> GetPlans(List<string> ids)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.GetPlan(ids);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         public int UpdatePost(string id, UpdatePostDTO post)
         {
             try
@@ -123,6 +141,22 @@ namespace Cookapp_API.DataAccess.BLL
                 {
                     DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
                     return dal.GetCommentbyPostID(id);
+                }
+                else { throw new Exception("not support unknown sqlProvider"); }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }public List<GetPlanDTO> GetPlanByAccountID(string id)
+        {
+            try
+            {
+                if (_sqlProvider == ESqlProvider.SQLSERVER)
+                {
+                    DAL.AllInOneDAL dal = GetDAL_MSSQLSERVER();
+                    return dal.GetPlanByAccountID(id);
                 }
                 else { throw new Exception("not support unknown sqlProvider"); }
             }
